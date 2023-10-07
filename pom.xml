@@ -19,6 +19,7 @@
         <module>dependency_bom</module>
         <module>order_service</module>
         <module>kitchen_service</module>
+        <module>delivery_service</module>
     </modules>
 
 
