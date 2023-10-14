@@ -7,7 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.liga.delivery_service.dto.DeliveriesResponseDto;
 import ru.liga.delivery_service.dto.DeliveryDto;
 import ru.liga.delivery_service.exception.ResourceNotFoundException;
@@ -39,12 +46,6 @@ public class CourierController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ErrorMessage handleException(ResourceNotFoundException exception) {
-        return new ErrorMessage(exception.getMessage());
     }
 
 }

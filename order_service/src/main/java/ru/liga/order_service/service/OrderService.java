@@ -6,7 +6,7 @@ import ru.liga.order_service.dto.OrderCreateResponseDto;
 import ru.liga.order_service.dto.OrderDto;
 import ru.liga.order_service.dto.OrdersResponseDto;
 import ru.liga.order_service.exception.ResourceNotFoundException;
-import java.util.*;
+import java.util.List;
 
 @Service
 public class OrderService {

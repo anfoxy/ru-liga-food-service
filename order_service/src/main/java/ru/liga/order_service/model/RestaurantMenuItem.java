@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 public class RestaurantMenuItem {
 
     @Schema(description = "ID пункта меню")
-    private Long Id;
+    private Long id;
 
     @Schema(description = "ресторан")
     private Restaurant restaurant;

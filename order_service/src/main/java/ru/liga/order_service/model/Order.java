@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 public class Order {
 
     @Schema(description = "ID заказа")
-    private Long Id;
+    private Long id;
 
     @Schema(description = "заказчик")
     private Customer customer;

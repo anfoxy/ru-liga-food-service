@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 public class Restaurant {
 
     @Schema(description = "ID ресторана")
-    private Long Id;
+    private Long id;
 
     @Schema(description = "адрес")
     private String address;

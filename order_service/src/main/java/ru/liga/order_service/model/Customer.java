@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 public class Customer {
 
     @Schema(description = "ID заказчика")
-    private Long Id;
+    private Long id;
 
     @Schema(description = "телефон")
     private String phone;
