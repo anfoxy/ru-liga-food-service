@@ -1,14 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>ru.liga</groupId>
         <artifactId>liga_education</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>dependency_bom</artifactId>
     <packaging>pom</packaging>
     <name>dependency_bom</name>
@@ -17,7 +16,9 @@
         <java.version>11</java.version>
         <spring.version>2.7.16</spring.version>
         <spring.actuator.version>3.0.1</spring.actuator.version>
+        <springdoc.version>1.7.0</springdoc.version>
         <mybatis.version>3.0.2</mybatis.version>
+        <lombok.version>1.18.30</lombok.version>
         <snakeyaml.version>2.0</snakeyaml.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -43,6 +44,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-amqp</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <optional>true</optional>
+                <version>${lombok.version}</version>
             </dependency>
 
             <dependency>
@@ -73,6 +81,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
             </dependency>
 
         </dependencies>
