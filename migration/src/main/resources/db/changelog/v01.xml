@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="kazhaeva">
+        <sqlFile path="v01/courier.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="v01/customer.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="v01/restaurant.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="v01/orders.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="v01/restaurant_menu_item.sql" relativeToChangelogFile="true"/>
+        <sqlFile path="v01/order_item.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="v01/rollback/init_rollback.sql" relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2" author="kazhaeva">
+        <createProcedure>
+            CREATE
+            OR REPLACE FUNCTION update_order_item_price() RETURNS trigger
+        LANGUAGE plpgsql
+        AS $$
+            BEGIN
+        NEW.price
+            = (SELECT price FROM restaurant_menu_item WHERE restaurant_menu_item_id = NEW.restaurant_menu_item_id) * NEW.quantity;
+            RETURN NEW;
+            END;
+        $$;
+        </createProcedure>
+        <rollback>
+            DROP FUNCTION update_order_item_price();
+        </rollback>
+    </changeSet>
+
+    <changeSet id="3" author="kazhaeva">
+        <sql>
+            DROP TRIGGER IF EXISTS add_current_date_to_my_table ON order_item;
+            CREATE TRIGGER add_current_date_to_my_table
+                BEFORE INSERT OR UPDATE ON order_item FOR EACH ROW
+            EXECUTE PROCEDURE update_order_item_price();
+        </sql>
+        <rollback>
+            DROP TRIGGER add_current_date_to_my_table ON order_item;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="4" author="kazhaeva">
+        <sqlFile path="v01/data.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+</databaseChangeLog>

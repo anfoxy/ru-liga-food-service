@@ -22,6 +22,7 @@
         <module>kitchen_service</module>
         <module>delivery_service</module>
         <module>notification_service</module>
+        <module>migration</module>
     </modules>
 
 </project>
