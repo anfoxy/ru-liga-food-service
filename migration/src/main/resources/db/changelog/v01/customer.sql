@@ -4,7 +4,7 @@ create table if not exists customer
 (
     customer_id bigint not null default nextval ('customer_seq'),
     phone varchar(11) not null,
-    email varchar(255),
+    email varchar(255) not null,
     address varchar(255) not null,
     create_dttm timestamptz  not null default now(),
     modify_dttm timestamptz  not null default now(),

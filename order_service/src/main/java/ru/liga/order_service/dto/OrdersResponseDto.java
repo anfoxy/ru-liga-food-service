@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import ru.liga.order_service.dto.dto_model.OrderDto;
+import ru.liga.order_service.model.Order;
+
 import java.util.List;
 
 @Schema(description = "Список заказов")
@@ -15,7 +18,7 @@ import java.util.List;
 public class OrdersResponseDto {
 
     @Schema(description = "Список заказов")
-    private List<OrderDto> orders;
+    private List<Order> orders;
 
     @Schema(description = "Индекс страницы")
     private Integer pageIndex;

@@ -26,9 +26,8 @@ public class CourierController {
     @Operation(summary = "Получить активные или завершенные доставки")
     @GetMapping("/deliveries")
     public ResponseEntity<Object> getAllDelivery(@RequestParam("status") String status) {
-        DeliveriesResponseDto deliveries = deliveryService.getDeliveriesByStatus(status);
         return ResponseEntity
-                .ok(deliveries);
+                .ok(deliveryService.getDeliveriesByStatus(status));
     }
 
     @Operation(summary = "Принять или завершить доставку")

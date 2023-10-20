@@ -5,7 +5,7 @@ create table if not exists courier
     courier_id bigint not null default nextval ('courier_seq'),
     phone varchar(11) not null,
     coordinates point not null,
-    status varchar(255),
+    status varchar(255) not null,
     create_dttm timestamptz  not null default now(),
     modify_dttm timestamptz  not null default now(),
     constraint courier_pk primary key (courier_id)

@@ -1,4 +1,4 @@
-package ru.liga.order_service.dto_model;
+package ru.liga.order_service.dto.dto_model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

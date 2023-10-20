@@ -1,4 +1,4 @@
-package ru.liga.order_service.dto_model;
+package ru.liga.order_service.dto.dto_model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -44,8 +44,8 @@ public class RestaurantMenuItemDto {
         this.status = restaurantMenuItem.getStatus();
     }
 
-    public RestaurantMenuItem convertToEntity() {
+/*    public RestaurantMenuItem convertToEntity() {
         return new RestaurantMenuItem(id,null,name,price,description,image,status,null);
-    }
+    }*/
 
 }

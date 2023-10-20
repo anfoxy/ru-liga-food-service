@@ -3,9 +3,9 @@ create sequence if not exists order_seq;
 create table if not exists orders
 (
     order_id bigint not null default nextval ('order_seq'),
-    customer_id bigint,
-    restaurant_id bigint,
-    status varchar(255),
+    customer_id bigint not null,
+    restaurant_id bigint not null,
+    status varchar(255) not null,
     courier_id bigint,
     timestamp timestamptz not null default now(),
     create_dttm timestamptz not null default now(),

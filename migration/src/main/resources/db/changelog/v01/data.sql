@@ -13,11 +13,11 @@ VALUES
     ('3333333333', 'customer3@example.com', 'Адрес 3');
 
 -- Добавление тестовых данных в таблицу restaurant
-INSERT INTO restaurant (address, status)
+INSERT INTO restaurant (address, status,restaurant_name)
 VALUES
-    ('Адрес 4', 'active'),
-    ('Адрес 5', 'complete'),
-    ('Адрес 6', 'denied');
+    ('Адрес 4', 'active','name1'),
+    ('Адрес 5', 'complete','name2'),
+    ('Адрес 6', 'denied','name3');
 
 -- Добавление тестовых данных в таблицу orders
 INSERT INTO orders (customer_id, restaurant_id, status, courier_id)
@@ -27,11 +27,11 @@ VALUES
     (3, 3, 'denied', 3);
 
 -- Добавление тестовых данных в таблицу restaurant_menu_item
-INSERT INTO restaurant_menu_item (restaurant_id, name, price, description, image)
+INSERT INTO restaurant_menu_item (restaurant_id, name, price, description, image, status)
 VALUES
-    (1, 'Item 1', 10.99, 'Description 1', 'image1.jpg'),
-    (2, 'Item 2', 8.50, 'Description 2', 'image2.jpg'),
-    (3, 'Item 3', 12.75, 'Description 3', 'image3.jpg');
+    (1, 'Item 1', 10.99, 'Description 1', 'image1.jpg', 'active'),
+    (2, 'Item 2', 8.50, 'Description 2', 'image2.jpg', 'active'),
+    (3, 'Item 3', 12.75, 'Description 3', 'image3.jpg', 'active');
 
 -- Добавление тестовых данных в таблицу order_item
 INSERT INTO order_item (order_id, restaurant_menu_item_id, quantity)

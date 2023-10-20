@@ -3,6 +3,7 @@ package ru.liga.kitchen_service.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import ru.liga.kitchen_service.model.Order;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public class KitchenResponseDto {
 
     @Schema(description = "Список заказов")
-    private List<OrderDto> orders;
+    private List<Order> orders;
 
     @Schema(description = "Индекс страницы")
     private Integer pageIndex;

@@ -3,8 +3,8 @@ create sequence if not exists order_item_seq;
 create table if not exists order_item
 (
     order_item_id bigint not null default nextval ('order_item_seq'),
-    order_id bigint,
-    restaurant_menu_item_id bigint,
+    order_id bigint not null,
+    restaurant_menu_item_id bigint not null,
     price numeric(10,2),
     quantity integer not null,
     create_dttm timestamptz  not null default now(),

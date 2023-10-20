@@ -21,9 +21,8 @@ public class RestaurantController {
     @Operation(summary = "Получить активные или завершенные доставки")
     @GetMapping("/orders")
     public ResponseEntity<Object> getAllDelivery(@RequestParam("status") String status) throws ResourceNotFoundException {
-        KitchenResponseDto deliveries = kitchenService.getDeliveriesByStatus(status);
         return ResponseEntity
-                .ok(deliveries);
+                .ok(kitchenService.getDeliveriesByStatus(status));
     }
 
 }

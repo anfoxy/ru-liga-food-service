@@ -1,30 +1,72 @@
 package ru.liga.order_service.model;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Schema(description = "Дто пункта меню")
-@Data
-@Accessors(chain = true)
-public class RestaurantMenuItem {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.List;
 
-    @Schema(description = "ID пункта меню")
+
+@Entity
+@Table(name = "restaurant_menu_item")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class RestaurantMenuItem implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_menu_item_seq_gen")
+    @SequenceGenerator(name = "restaurant_menu_item_seq_gen", sequenceName = "restaurant_menu_item_seq", allocationSize = 1)
+    @Column(name = "restaurant_menu_item_id")
     private Long id;
 
-    @Schema(description = "ресторан")
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @Schema(description = "название")
     private String name;
 
-    @Schema(description = "цена")
     private Double price;
 
-    @Schema(description = "описание")
     private String description;
 
-    @Schema(description = "изображение")
     private String image;
 
+    private String status;
+
+    @OneToOne(mappedBy = "restaurantMenuItem")
+    @JsonIgnore
+    private OrderItem orderItem;
+
+    @Override
+    public String toString() {
+        return "RestaurantMenuItem{" +
+                "id=" + id +
+                ", restaurant=" + restaurant +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
