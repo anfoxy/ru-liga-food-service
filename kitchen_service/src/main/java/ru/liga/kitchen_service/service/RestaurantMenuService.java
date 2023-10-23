@@ -3,11 +3,12 @@ package ru.liga.kitchen_service.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.liga.kitchen_service.exception.ResourceNotFoundException;
-import ru.liga.kitchen_service.model.OrderItem;
-import ru.liga.kitchen_service.model.RestaurantMenuItem;
 import ru.liga.kitchen_service.repository.OrderItemRepository;
 import ru.liga.kitchen_service.repository.RestaurantMenuRepository;
 import ru.liga.kitchen_service.repository.RestaurantRepository;
+import ru.liga.kitchen_service.model.OrderItem;
+import ru.liga.kitchen_service.model.RestaurantMenuItem;
+import ru.liga.commons.status.StatusRestaurantMenu;
 
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class RestaurantMenuService {
 
     public void deleteRestaurantMenuById(Long id) throws ResourceNotFoundException {
         RestaurantMenuItem restaurantMenuItem = restaurantMenuRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
-        restaurantMenuItem.setStatus("Deleted");
+        restaurantMenuItem.setStatus(StatusRestaurantMenu.RESTAURANT_MENU_DENIED);
         restaurantMenuRepository.save(restaurantMenuItem);
     }
 

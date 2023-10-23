@@ -5,9 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import ru.liga.commons.status.StatusRestaurantMenu;
+import ru.liga.kitchen_service.mapper.PostgreSQLEnumType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +30,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 public class RestaurantMenuItem implements Serializable {
 
     @Id
@@ -44,10 +51,25 @@ public class RestaurantMenuItem implements Serializable {
 
     private String image;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Type(type = "pgsql_enum")
+    private StatusRestaurantMenu status;
 
     @OneToOne(mappedBy = "restaurantMenuItem")
     @JsonIgnore
     private OrderItem orderItem;
+
+    @Override
+    public String toString() {
+        return "RestaurantMenuItem{" +
+                "id=" + id +
+                ", restaurant=" + restaurant +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 
 }

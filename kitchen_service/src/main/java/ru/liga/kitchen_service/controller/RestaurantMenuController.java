@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.liga.kitchen_service.exception.ResourceNotFoundException;
-import ru.liga.kitchen_service.model.RestaurantMenuItem;
 import ru.liga.kitchen_service.service.RestaurantMenuService;
+import ru.liga.kitchen_service.model.RestaurantMenuItem;
+
+import java.util.Map;
 
 @Tag(name = "Api для работы с меню ресторана")
 @RequiredArgsConstructor
@@ -60,9 +61,12 @@ public class RestaurantMenuController {
 
     @Operation(summary = "добавить меню ресторана")
     @PutMapping("/update/{id}")
-    public ResponseEntity<Object> updatePriceRestaurantMenu(@PathVariable(value = "id") Long id, @RequestBody Double price) throws ResourceNotFoundException {
+    public ResponseEntity<Object> updatePriceRestaurantMenu(@PathVariable(value = "id") Long id, @RequestBody Map<String, String> json) throws ResourceNotFoundException {
+        if (json.get("price") == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
+        }
         return ResponseEntity
-                .ok(restaurantMenuService.updatePriceRestaurantMenu(id,price));
+                .ok(restaurantMenuService.updatePriceRestaurantMenu(id,Double.valueOf(json.get("price"))));
     }
 }
 

@@ -1,15 +1,23 @@
 create sequence if not exists restaurant_seq;
 
+create type restaurant_status AS ENUM
+    (
+    'RESTAURANT_ACTIVE',
+    'RESTAURANT_NOT_ACTIVE'
+    );
+
 create table if not exists restaurant
 (
     restaurant_id bigint not null default nextval ('restaurant_seq'),
     address varchar(255) not null,
-    status varchar(255) not null,
+    status restaurant_status not null,
     restaurant_name varchar(255) not null,
     create_dttm timestamptz  not null default now(),
     modify_dttm timestamptz  not null default now(),
     constraint restaurant_pk primary key (restaurant_id)
     );
+
+
 
 comment on table restaurant is 'Рестораны';
 comment on column restaurant.restaurant_id is 'Идентификатор ресторана';

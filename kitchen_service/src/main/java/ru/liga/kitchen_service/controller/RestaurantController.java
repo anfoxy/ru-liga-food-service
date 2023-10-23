@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.liga.kitchen_service.dto.KitchenResponseDto;
 import ru.liga.kitchen_service.exception.ResourceNotFoundException;
 import ru.liga.kitchen_service.service.KitchenService;
+import ru.liga.commons.status.StatusOrders;
 
 @Tag(name = "Api для работы с заказами")
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class RestaurantController {
 
     @Operation(summary = "Получить активные или завершенные доставки")
     @GetMapping("/orders")
-    public ResponseEntity<Object> getAllDelivery(@RequestParam("status") String status) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getAllDelivery(@RequestParam("status") StatusOrders status) throws ResourceNotFoundException {
         return ResponseEntity
                 .ok(kitchenService.getDeliveriesByStatus(status));
     }

@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.liga.order_service.batis_mapper.OrderMapper;
+import ru.liga.order_service.model.Order;
 import ru.liga.order_service.dto.OrderCreateRequestDto;
 import ru.liga.order_service.dto.OrdersResponseDto;
 import ru.liga.order_service.exception.ResourceNotFoundException;
-import ru.liga.order_service.model.Order;
 import ru.liga.order_service.service.OrderService;
 
 @Tag(name = "Api для работы с заказами")
@@ -24,8 +25,7 @@ import ru.liga.order_service.service.OrderService;
 @RequestMapping("/order")
 public class OrderController {
 
-    final private OrderService orderService;
-
+    private final OrderService orderService;
     @Operation(summary = "Получить заказы")
     @GetMapping("/orders")
     public ResponseEntity<Object> getAllOrders() {

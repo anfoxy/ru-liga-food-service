@@ -5,9 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import ru.liga.commons.status.StatusRestaurant;
+import ru.liga.kitchen_service.mapper.PostgreSQLEnumType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,12 +24,14 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
 
+
 @Entity
 @Table(name = "restaurant")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 public class Restaurant implements Serializable {
 
     @Id
@@ -37,9 +45,11 @@ public class Restaurant implements Serializable {
 
     private String address;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Type(type = "pgsql_enum")
+    private StatusRestaurant status;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+   @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Order> orders;
 
@@ -47,4 +57,13 @@ public class Restaurant implements Serializable {
     @JsonIgnore
     private List<RestaurantMenuItem> restaurantMenuItems;
 
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "id=" + id +
+                ", address='" + address + '\'' +
+                ", status='" + status + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

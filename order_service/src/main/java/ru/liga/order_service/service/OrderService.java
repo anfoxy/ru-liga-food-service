@@ -4,17 +4,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.liga.order_service.model.Order;
+import ru.liga.order_service.model.OrderItem;
 import ru.liga.order_service.dto.OrderCreateRequestDto;
 import ru.liga.order_service.dto.OrderCreateResponseDto;
 import ru.liga.order_service.dto.OrderItemCreateRequestDto;
 import ru.liga.order_service.dto.OrdersResponseDto;
 import ru.liga.order_service.exception.ResourceNotFoundException;
-import ru.liga.order_service.model.Order;
-import ru.liga.order_service.model.OrderItem;
 import ru.liga.order_service.repository.CustomerRepository;
 import ru.liga.order_service.repository.OrderRepository;
 import ru.liga.order_service.repository.RestaurantMenuRepository;
 import ru.liga.order_service.repository.RestaurantRepository;
+import ru.liga.commons.status.StatusOrders;
+
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,7 @@ public class OrderService {
         }
         return orders;
     }
+
 
     public Order getOrderById(Long id) throws ResourceNotFoundException {
         return orderRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
@@ -76,7 +80,7 @@ public class OrderService {
         order.setRestaurant(restaurantRepository
                 .findById(orderDto.getRestaurant())
                 .orElseThrow(() -> new ResourceNotFoundException("not found Restaurant")));
-        order.setStatus("created");
+        order.setStatus(StatusOrders.CUSTOMER_CREATED);
         order.setTimestamp(ZonedDateTime.now());
         order.setOrderItems(setOrderItem(order,orderDto.getOrderItems()));
         orderRepository.save(order);
@@ -84,7 +88,7 @@ public class OrderService {
         return order;
     }
 
-    private ArrayList<OrderItem> setOrderItem(Order order,List<OrderItemCreateRequestDto> orderItemDtoList) throws ResourceNotFoundException {
+    private ArrayList<OrderItem> setOrderItem(Order order, List<OrderItemCreateRequestDto> orderItemDtoList) throws ResourceNotFoundException {
         ArrayList<OrderItem> orderItemArrayList = new ArrayList<>();
         for (OrderItemCreateRequestDto ItemDto : orderItemDtoList) {
             OrderItem orderItem = new OrderItem();
@@ -97,5 +101,6 @@ public class OrderService {
         }
         return orderItemArrayList;
     }
+
 
 }

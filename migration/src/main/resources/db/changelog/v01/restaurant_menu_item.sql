@@ -1,5 +1,12 @@
 create sequence if not exists restaurant_menu_item_seq;
 
+create type restaurant_menu_status AS ENUM
+    (
+    'RESTAURANT_MENU_ACTIVE',
+    'RESTAURANT_MENU_COMPLETE',
+    'RESTAURANT_MENU_DENIED'
+    );
+
 create table if not exists restaurant_menu_item
 (
     restaurant_menu_item_id bigint not null default nextval ('restaurant_menu_item_seq'),
@@ -7,7 +14,7 @@ create table if not exists restaurant_menu_item
     name varchar(255) not null,
     price numeric(10,2) not null,
     description text,
-    status varchar(255) not null,
+    status restaurant_menu_status not null,
     image varchar(255),
     create_dttm timestamptz  not null default now(),
     modify_dttm timestamptz  not null default now(),

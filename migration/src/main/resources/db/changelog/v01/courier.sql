@@ -1,11 +1,18 @@
 create sequence if not exists courier_seq;
 
+create type courier_status AS ENUM
+    (
+    'COURIER_ACTIVE',
+    'COURIER_NOT_ACTIVE',
+    'COURIER_DELIVERS'
+    );
+
 create table if not exists courier
 (
     courier_id bigint not null default nextval ('courier_seq'),
     phone varchar(11) not null,
     coordinates point not null,
-    status varchar(255) not null,
+    status courier_status not null,
     create_dttm timestamptz  not null default now(),
     modify_dttm timestamptz  not null default now(),
     constraint courier_pk primary key (courier_id)

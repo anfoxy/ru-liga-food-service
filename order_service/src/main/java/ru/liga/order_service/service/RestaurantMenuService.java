@@ -2,8 +2,8 @@ package ru.liga.order_service.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.liga.order_service.exception.ResourceNotFoundException;
 import ru.liga.order_service.model.RestaurantMenuItem;
+import ru.liga.order_service.exception.ResourceNotFoundException;
 import ru.liga.order_service.repository.RestaurantMenuRepository;
 import java.util.List;
 

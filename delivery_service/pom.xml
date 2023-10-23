@@ -60,6 +60,11 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>ru.liga</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

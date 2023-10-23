@@ -1,11 +1,28 @@
 create sequence if not exists order_seq;
 
+create type orders_status AS ENUM
+    (
+    'CUSTOMER_CREATED',
+    'CUSTOMER_PAID',
+    'CUSTOMER_CANCELLED',
+    'KITCHEN_ACCEPTED',
+    'KITCHEN_DENIED',
+    'KITCHEN_REFUNDED',
+    'KITCHEN_PREPARING',
+    'DELIVERY_PENDING',
+    'DELIVERY_PICKING',
+    'DELIVERY_DENIED',
+    'DELIVERY_REFUNDED',
+    'DELIVERY_DELIVERING',
+    'DELIVERY_COMPLETE'
+    );
+
 create table if not exists orders
 (
     order_id bigint not null default nextval ('order_seq'),
     customer_id bigint not null,
     restaurant_id bigint not null,
-    status varchar(255) not null,
+    status orders_status not null,
     courier_id bigint,
     timestamp timestamptz not null default now(),
     create_dttm timestamptz not null default now(),

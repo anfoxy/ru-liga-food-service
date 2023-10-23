@@ -23,6 +23,7 @@
         <module>delivery_service</module>
         <module>notification_service</module>
         <module>migration</module>
+        <module>commons</module>
     </modules>
 
 </project>

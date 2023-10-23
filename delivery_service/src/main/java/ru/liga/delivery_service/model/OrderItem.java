@@ -19,7 +19,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-
 @Entity
 @Table(name = "order_item")
 @Getter

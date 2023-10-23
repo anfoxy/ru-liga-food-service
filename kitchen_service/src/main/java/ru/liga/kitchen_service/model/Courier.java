@@ -5,9 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import ru.liga.commons.status.StatusCourier;
+import ru.liga.kitchen_service.mapper.PostgreSQLEnumType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +30,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 public class Courier implements Serializable {
 
     @Id
@@ -34,7 +41,9 @@ public class Courier implements Serializable {
 
     private String phone;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Type(type = "pgsql_enum")
+    private StatusCourier status;
 
     private String coordinates;
 
@@ -42,4 +51,13 @@ public class Courier implements Serializable {
     @JsonIgnore
     private List<Order> orders;
 
+    @Override
+    public String toString() {
+        return "Courier{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                ", status='" + status + '\'' +
+                ", coordinates='" + coordinates + '\'' +
+                '}';
+    }
 }

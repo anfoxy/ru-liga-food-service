@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.liga.order_service.exception.ResourceNotFoundException;
 import ru.liga.order_service.service.RestaurantService;
+import ru.liga.commons.status.StatusRestaurant;
 
 @Tag(name = "Api для работы с рестораном")
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class RestaurantController {
 
     @Operation(summary = "Получить ресторан по статусу")
     @GetMapping("/status/{status}")
-    public ResponseEntity<Object> getRestaurantByStatus(@PathVariable("status") String status) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getRestaurantByStatus(@PathVariable("status") StatusRestaurant status) throws ResourceNotFoundException {
         return ResponseEntity
                 .ok(restaurantService.getRestaurantByStatus(status));
     }

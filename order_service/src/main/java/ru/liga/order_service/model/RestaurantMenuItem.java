@@ -1,29 +1,28 @@
 package ru.liga.order_service.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import ru.liga.commons.status.StatusRestaurantMenu;
+import ru.liga.order_service.mapper.PostgreSQLEnumType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.List;
-
 
 @Entity
 @Table(name = "restaurant_menu_item")
@@ -31,6 +30,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 public class RestaurantMenuItem implements Serializable {
 
     @Id
@@ -51,7 +51,9 @@ public class RestaurantMenuItem implements Serializable {
 
     private String image;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Type(type = "pgsql_enum")
+    private StatusRestaurantMenu status;
 
     @OneToOne(mappedBy = "restaurantMenuItem")
     @JsonIgnore
@@ -69,4 +71,5 @@ public class RestaurantMenuItem implements Serializable {
                 ", status='" + status + '\'' +
                 '}';
     }
+
 }
