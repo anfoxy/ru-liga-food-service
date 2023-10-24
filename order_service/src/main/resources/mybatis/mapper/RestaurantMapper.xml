@@ -8,54 +8,31 @@
             <result property="address" column="restaurant_address" />
             <result property="status" column="restaurant_status" />
 
-        <collection property="restaurantMenuItem" javaType="List" ofType="RestaurantMenuItem">
-
-                <result property="id" column="restaurant_menu_item_id" />
-                <result property="name" column="restaurant_menu_item_name" />
-                <result property="price" column="restaurant_menu_item_price" />
-                <result property="description" column="restaurant_menu_item_description" />
-                <result property="image" column="restaurant_menu_item_image" />
-                <result property="status" column="restaurant_menu_item_status" />
-
-        </collection>
     </resultMap>
 
-    <select id="findOrderById" resultMap="OrderResultMap">
+    <select id="findRestaurantById" resultMap="RestaurantResultMap">
         SELECT
-            r.restaurant_id,
-            r.restaurant_name AS restaurant_name,
-            r.address AS restaurant_address,
-            r.status AS restaurant_status,
-            m.restaurant_menu_item_id,
-            m.name AS restaurant_menu_item_name,
-            m.price AS restaurant_menu_item_price,
-            m.description AS restaurant_menu_item_description,
-            m.image AS restaurant_menu_item_image,
-            m.status AS restaurant_menu_item_status
+            restaurant_id,
+            restaurant_name AS restaurant_name,
+            address AS restaurant_address,
+            status AS restaurant_status
         FROM
-            restaurant r
-                LEFT JOIN restaurant_menu_item m ON r.restaurant_id = m.restaurant_id
+            restaurant
         WHERE
-            r.restaurant_id = #{id}
+            restaurant_id = #{id}
     </select>
 
 
-    <select id="findAllOrderByRestaurantId" resultMap="OrderResultMap">
+    <select id="findAllRestaurantByStatus" resultMap="RestaurantResultMap">
         SELECT
-            r.restaurant_id,
-            r.restaurant_name AS restaurant_name,
-            r.address AS restaurant_address,
-            r.status AS restaurant_status,
-            m.restaurant_menu_item_id,
-            m.name AS restaurant_menu_item_name,
-            m.price AS restaurant_menu_item_price,
-            m.description AS restaurant_menu_item_description,
-            m.image AS restaurant_menu_item_image,
-            m.status AS restaurant_menu_item_status
+            restaurant_id,
+            restaurant_name AS restaurant_name,
+            address AS restaurant_address,
+            status AS restaurant_status
         FROM
-            restaurant r
-                LEFT JOIN restaurant_menu_item m ON r.restaurant_id = m.restaurant_id
+            restaurant
         WHERE
-            r.status::text = #{status}
+            status::text = #{status}
     </select>
+
 </mapper>

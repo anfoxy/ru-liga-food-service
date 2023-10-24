@@ -49,7 +49,7 @@ public class Restaurant implements Serializable {
     @Type(type = "pgsql_enum")
     private StatusRestaurant status;
 
-   @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Order> orders;
 

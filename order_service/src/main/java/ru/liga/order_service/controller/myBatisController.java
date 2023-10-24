@@ -12,8 +12,10 @@ import ru.liga.commons.status.StatusCourier;
 import ru.liga.commons.status.StatusRestaurant;
 import ru.liga.order_service.batis_mapper.CourierMapper;
 import ru.liga.order_service.batis_mapper.CustomerMapper;
+import ru.liga.order_service.batis_mapper.OrderItemMapper;
 import ru.liga.order_service.batis_mapper.OrderMapper;
 import ru.liga.order_service.batis_mapper.RestaurantMapper;
+import ru.liga.order_service.batis_mapper.RestaurantMenuMapper;
 import ru.liga.order_service.exception.ResourceNotFoundException;
 
 @RequiredArgsConstructor
@@ -23,11 +25,15 @@ public class myBatisController {
 
     private final OrderMapper orderMapper;
 
+    private final OrderItemMapper orderItemMapper;
+
     private final CourierMapper courierMapper;
 
     private final CustomerMapper customerMapper;
 
     private final RestaurantMapper restaurantMapper;
+
+    private final RestaurantMenuMapper restaurantMenuMapper;
 
     @Operation(summary = "Получить заказ по ID")
     @GetMapping("/order/{id}")
@@ -95,5 +101,39 @@ public class myBatisController {
     public ResponseEntity<Object> getRestaurantByStatusIDMyBatis(@PathVariable("status") StatusRestaurant statusRestaurant) throws ResourceNotFoundException {
         return ResponseEntity
                 .ok(restaurantMapper.findAllRestaurantByStatus(statusRestaurant));
+    }
+
+    @Operation(summary = "Получить пункт заказа по ID")
+    @GetMapping("/order_item/{id}")
+    public ResponseEntity<Object> getOrderItemByIdMyBatis(@PathVariable("id") Long id) throws ResourceNotFoundException {
+        if (id <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
+        }
+        return ResponseEntity
+                .ok(orderItemMapper.findOrderItemById(id));
+    }
+
+    @Operation(summary = "Получить пункт заказа по id ресторана")
+    @GetMapping("/order_item/order/{order_id}")
+    public ResponseEntity<Object> getOrderItemByOrderIDMyBatis(@PathVariable("order_id") Long order_id) throws ResourceNotFoundException {
+        return ResponseEntity
+                .ok(orderItemMapper.findAllOrderItemByOrderId(order_id));
+    }
+
+    @Operation(summary = "Получить заказ по ID")
+    @GetMapping("/restaurant_menu/{id}")
+    public ResponseEntity<Object> getRestaurantMenuByIdMyBatis(@PathVariable("id") Long id) throws ResourceNotFoundException {
+        if (id <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
+        }
+        return ResponseEntity
+                .ok(restaurantMenuMapper.findRestaurantMenuById(id));
+    }
+
+    @Operation(summary = "Получить заказ по id ресторана")
+    @GetMapping("/restaurant_menu/restaurant/{restaurant_id}")
+    public ResponseEntity<Object> getRestaurantMenuByRestaurantIDMyBatis(@PathVariable("restaurant_id") Long restaurant_id) throws ResourceNotFoundException {
+        return ResponseEntity
+                .ok(restaurantMenuMapper.findAllRestaurantMenuByRestaurantId(restaurant_id));
     }
 }
