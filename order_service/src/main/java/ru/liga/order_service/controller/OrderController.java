@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.liga.order_service.batis_mapper.OrderMapper;
 import ru.liga.order_service.model.Order;
 import ru.liga.order_service.dto.OrderCreateRequestDto;
 import ru.liga.order_service.dto.OrdersResponseDto;
@@ -64,6 +64,12 @@ public class OrderController {
                 .ok(orderService.orderUpdate(id, order));
     }
 
+    @Operation(summary = "Обновить данные заказа по ID")
+    @PutMapping("/update/status/{id}")
+    public ResponseEntity<Object> updateOrderStatusById(@PathVariable("id") Long id, @RequestParam("status") String status) throws ResourceNotFoundException {
+        return ResponseEntity
+                .ok(orderService.updateOrderStatusById(id, status));
+    }
     @Operation(summary = "Создать новый заказ")
     @PostMapping("/create")
     public ResponseEntity<Object> createOrder(@RequestBody OrderCreateRequestDto order) throws ResourceNotFoundException {

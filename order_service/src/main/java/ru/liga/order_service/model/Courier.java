@@ -51,13 +51,4 @@ public class Courier implements Serializable {
     @JsonIgnore
     private List<Order> orders;
 
-    @Override
-    public String toString() {
-        return "Courier{" +
-                "id=" + id +
-                ", phone='" + phone + '\'' +
-                ", status='" + status + '\'' +
-                ", coordinates='" + coordinates + '\'' +
-                '}';
-    }
 }

@@ -46,14 +46,4 @@ public class OrderItem implements Serializable {
 
     private Integer quantity;
 
-    @Override
-    public String toString() {
-        return "OrderItem{" +
-                "id=" + id +
-                ", order=" + order.getId() +
-                ", restaurantMenuItem=" + restaurantMenuItem +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                '}';
-    }
 }

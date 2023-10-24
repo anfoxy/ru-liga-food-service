@@ -42,13 +42,4 @@ public class Customer implements Serializable {
     @JsonIgnore
     private List<Order> orders;
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                '}';
-    }
 }

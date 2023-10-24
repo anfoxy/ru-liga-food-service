@@ -103,4 +103,14 @@ public class OrderService {
     }
 
 
+    public Order updateOrderStatusById(Long id, String status) throws ResourceNotFoundException {
+       Order order = getOrderById(id);
+       try {
+           order.setStatus(StatusOrders.valueOf(status));
+       } catch (IllegalArgumentException t){
+           throw new ResourceNotFoundException("invalid status");
+       }
+       return orderRepository.save(order);
+    }
+
 }

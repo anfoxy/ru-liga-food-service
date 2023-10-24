@@ -64,16 +64,4 @@ public class Order implements Serializable {
     @JsonManagedReference
     private List<OrderItem> orderItems;
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", customer=" + customer +
-                ", restaurant=" + restaurant +
-                ", courier=" + courier +
-                ", status='" + status + '\'' +
-                ", timestamp='" + timestamp + '\'' +
-                ", orderItems=" + orderItems +
-                '}';
-    }
 }
