@@ -16,6 +16,7 @@
         <java.version>11</java.version>
         <log4j.version>1.2.17</log4j.version>
         <batis.version>3.5.6</batis.version>
+        <feign.version>3.1.5</feign.version>
         <mybatis.spring.version>2.1.3</mybatis.spring.version>
         <spring.version>2.7.16</spring.version>
         <spring.actuator.version>3.0.1</spring.actuator.version>
@@ -58,6 +59,12 @@
                 <artifactId>lombok</artifactId>
                 <optional>true</optional>
                 <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <version>${feign.version}</version>
             </dependency>
 
             <dependency>

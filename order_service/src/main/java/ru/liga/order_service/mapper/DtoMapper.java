@@ -8,7 +8,7 @@ import ru.liga.order_service.model.Order;
 
 
 @Mapper(componentModel = "spring")
-public interface CustomerMapper {
+public interface DtoMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateOrderFromDto(Order dto, @MappingTarget Order entity);
