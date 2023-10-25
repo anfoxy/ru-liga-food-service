@@ -3,6 +3,7 @@ package ru.liga.delivery_service.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import ru.liga.commons.dto.DeliveryDto;
 
 import java.util.List;
 

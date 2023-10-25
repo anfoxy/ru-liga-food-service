@@ -3,23 +3,19 @@ package ru.liga.kitchen_service.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.commons.status.StatusOrders;
 import ru.liga.kitchen_service.dto.KitchenResponseDto;
-import ru.liga.kitchen_service.dto.OrderListDto;
 import ru.liga.kitchen_service.exception.ResourceNotFoundException;
 import ru.liga.kitchen_service.feign.OrderFeign;
 import ru.liga.kitchen_service.model.Order;
-import ru.liga.kitchen_service.model.Restaurant;
 import ru.liga.kitchen_service.repository.OrderRepository;
-import ru.liga.kitchen_service.repository.RestaurantRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OrderService {
 
@@ -27,10 +23,9 @@ public class OrderService {
     private final OrderFeign orderFeign;
     private final ObjectMapper objectMapper;
     private final OrderRepository orderRepository;
+    private final MessageSender sendMassageMQ;
 
     public KitchenResponseDto getDeliveriesByStatus(StatusOrders status) throws ResourceNotFoundException {
-
-
         if (status == null) {
             throw new ResourceNotFoundException();
         }
@@ -59,7 +54,20 @@ public class OrderService {
         } catch (JsonProcessingException e) {
             throw new ResourceNotFoundException();
         }
+
+        if(statusOrders.equals(StatusOrders.DELIVERY_PENDING.toString())){
+            sendMassageMQ.sendOrder(tryToSerialyzeMessageAsString(order),order.getCustomer().getAddress());
+        }
         return order;
+    }
+    private String tryToSerialyzeMessageAsString(Order messageModel) {
+        String carInfoInLine = null;
+        try {
+            carInfoInLine = objectMapper.writeValueAsString(messageModel);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return carInfoInLine;
     }
 
 }

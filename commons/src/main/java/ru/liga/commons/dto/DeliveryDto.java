@@ -1,11 +1,14 @@
-package ru.liga.delivery_service.dto;
+package ru.liga.commons.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import ru.liga.commons.status.StatusOrders;
 
 @Schema(description = "Доставка")
 @Data
+@Builder
 @Accessors(chain = true)
 public class DeliveryDto {
 
@@ -22,6 +25,5 @@ public class DeliveryDto {
     private Double payment;
 
     @Schema(description = "Статус")
-    private String orderAction;
-
+    private StatusOrders orderAction;
 }

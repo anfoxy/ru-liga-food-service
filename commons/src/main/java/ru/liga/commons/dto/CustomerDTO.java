@@ -1,13 +1,15 @@
-package ru.liga.delivery_service.dto;
+package ru.liga.commons.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Schema(description = "Ресторан")
+@Schema(description = "Заказчик")
 @Data
+@Builder
 @Accessors(chain = true)
-public class RestaurantDTO {
+public class CustomerDTO {
 
     @Schema(description = "Адрес")
     private String address;
