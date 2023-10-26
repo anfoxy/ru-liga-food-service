@@ -1,9 +1,9 @@
 package ru.liga.order_service.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.liga.order_service.mapper.DtoMapper;
 import ru.liga.order_service.model.Order;
 import ru.liga.order_service.model.OrderItem;
 import ru.liga.order_service.dto.OrderCreateRequestDto;
@@ -17,7 +17,6 @@ import ru.liga.order_service.repository.RestaurantMenuRepository;
 import ru.liga.order_service.repository.RestaurantRepository;
 import ru.liga.commons.status.StatusOrders;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +31,16 @@ public class OrderService {
     private final RestaurantMenuRepository restaurantMenuRepository;
     private final CustomerRepository customerRepository;
     private final OrderItemService orderItemService;
-    private final ObjectMapper objectMapper;
+    private final DtoMapper mapper;
 
     public OrdersResponseDto getAllOrders() throws ResourceNotFoundException {
+        List<Order> orderArrayList = orderRepository.findAll();
+
         OrdersResponseDto orders = new OrdersResponseDto();
-        if (orders == null) {
-            throw new ResourceNotFoundException();
-        }
+        orders.setOrders(orderArrayList);
+        orders.setPageCount(orderArrayList.size());
+        orders.setPageIndex(1);
+
         return orders;
     }
 
@@ -51,15 +53,11 @@ public class OrderService {
         return orderRepository.findAllByRestaurant_Id(restaurant_id);
     }
 
-    public Order orderUpdate(Long id, Order orderRequest) {
-        Order orderResponse;
-        try {
-            Order order = objectMapper.readValue(objectMapper.writeValueAsString(orderRequest), Order.class);
-            order.setId(id);
-            orderResponse = orderRepository.save(order);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    public Order orderUpdate(Long id, Order orderRequest) throws ResourceNotFoundException {
+        Order orderResponse = getOrderById(id);
+        mapper.updateOrderFromDto(orderRequest, orderResponse);
+        orderResponse.setId(id);
+        orderRepository.save(orderResponse);
         return orderResponse;
     }
 
@@ -113,4 +111,7 @@ public class OrderService {
        return orderRepository.save(order);
     }
 
+    public List<Order> getAllOrderByStatus(StatusOrders status) {
+        return orderRepository.findAllByStatus(status);
+    }
 }

@@ -1,6 +1,7 @@
 package ru.liga.delivery_service.service;
 
 import org.springframework.stereotype.Service;
+import ru.liga.commons.status.StatusOrders;
 import ru.liga.delivery_service.dto.DeliveriesResponseDto;
 import ru.liga.delivery_service.exception.ResourceNotFoundException;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class DeliveryService {
         return deliveriesResponseDto;
     }
 
-    public boolean getDeliveriesByStatus(Long id, String orderAction) throws ResourceNotFoundException {
+    public boolean getDeliveriesByStatus(Long id, StatusOrders orderAction) throws ResourceNotFoundException {
         if (id < 0) {
             throw new ResourceNotFoundException();
         }

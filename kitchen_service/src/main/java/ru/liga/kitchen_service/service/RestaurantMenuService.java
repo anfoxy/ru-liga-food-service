@@ -52,8 +52,10 @@ public class RestaurantMenuService {
         restaurantMenuRepository.save(restaurantMenuItem);
 
         OrderItem newOrderItemPrice = restaurantMenuItem.getOrderItem();
-        newOrderItemPrice.setPrice(newOrderItemPrice.getQuantity()*price);
-        orderItemRepository.save(newOrderItemPrice);
+        if (newOrderItemPrice != null) {
+            newOrderItemPrice.setPrice(newOrderItemPrice.getQuantity() * price);
+            orderItemRepository.save(newOrderItemPrice);
+        }
         return restaurantMenuItem;
     }
 }

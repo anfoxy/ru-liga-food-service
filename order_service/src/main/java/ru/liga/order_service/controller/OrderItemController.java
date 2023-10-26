@@ -35,7 +35,7 @@ public class OrderItemController {
     }
 
     @Operation(summary = "Получить пункт заказа по id заказа")
-    @GetMapping("/order_id/{order_id}")
+    @GetMapping("/order/{order}")
     public ResponseEntity<Object> getOrderItemByOrderId(@PathVariable("order_id") Long id) throws ResourceNotFoundException {
         return ResponseEntity
                 .ok(orderItemMenuService.getOrderItemByOrderId(id));
@@ -49,7 +49,7 @@ public class OrderItemController {
     }
 
     @Operation(summary = "удалить пункт заказа по id")
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<String> deleteOrderItem(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         orderItemMenuService.deleteOrderItemById(id);
         return ResponseEntity

@@ -8,16 +8,16 @@ VALUES
 -- Добавление тестовых данных в таблицу customer
 INSERT INTO customer (phone, email, address)
 VALUES
-    ('1111111111', 'customer1@example.com', 'Адрес 1'),
-    ('2222222222', 'customer2@example.com', 'Адрес 2'),
-    ('3333333333', 'customer3@example.com', 'Адрес 3');
+    ('1111111111', 'customer1@example.com', 'Нижний Новгород, Советский район, дом 5'),
+    ('2222222222', 'customer2@example.com', 'Нижний Новгород, Приокский район, дом 1'),
+    ('3333333333', 'customer3@example.com', 'Нижний Новгород, Нижегородский район, дом 1');
 
 -- Добавление тестовых данных в таблицу restaurant
 INSERT INTO restaurant (address, status,restaurant_name)
 VALUES
-    ('Адрес 4', 'RESTAURANT_ACTIVE','name1'),
-    ('Адрес 5', 'RESTAURANT_ACTIVE','name2'),
-    ('Адрес 6', 'RESTAURANT_ACTIVE','name3');
+    ('Нижний Новгород, Приокский район, дом 7', 'RESTAURANT_ACTIVE','name1'),
+    ('Нижний Новгород, Нижегородский район, дом 8', 'RESTAURANT_ACTIVE','name2'),
+    ('Нижний Новгород, Советский район, дом 9', 'RESTAURANT_ACTIVE','name3');
 
 -- Добавление тестовых данных в таблицу orders
 INSERT INTO orders (customer_id, restaurant_id, status, courier_id)
