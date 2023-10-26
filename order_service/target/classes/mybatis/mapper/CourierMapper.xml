@@ -1,0 +1,32 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ru.liga.order_service.batis_mapper.CourierMapper">
+
+    <resultMap id="CourierResultMap" type="Courier">
+            <result property="id" column="courier_id" />
+            <result property="phone" column="courier_phone" />
+            <result property="status" column="courier_status" />
+            <result property="coordinates" column="courier_coordinates" />
+    </resultMap>
+
+    <select id="findCourierById" resultMap="CourierResultMap">
+        SELECT
+            c.courier_id,
+            c.phone AS courier_phone,
+            c.status AS courier_status,
+            c.coordinates AS courier_coordinates
+        FROM courier c
+        WHERE
+            courier_id = #{id}
+    </select>
+
+    <select id="findAllCourierByStatus"  parameterType="ru.liga.commons.status.StatusCourier" resultMap="CourierResultMap">
+        SELECT
+            c.courier_id,
+            c.phone AS courier_phone,
+            c.status AS courier_status,
+            c.coordinates AS courier_coordinates
+        FROM courier c
+        WHERE
+            c.status::text = #{status}
+    </select>
+</mapper>

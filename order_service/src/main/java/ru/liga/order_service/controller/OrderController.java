@@ -46,6 +46,7 @@ public class OrderController {
         return ResponseEntity
                 .ok(orderService.getAllOrderByStatus(status));
     }
+
     @Operation(summary = "Получить заказ по ID")
     @GetMapping("/order/{id}")
     public ResponseEntity<Object> getOrderById(@PathVariable("id") Long id) throws ResourceNotFoundException {
@@ -76,6 +77,7 @@ public class OrderController {
         return ResponseEntity
                 .ok(orderService.updateOrderStatusById(id, status));
     }
+
     @Operation(summary = "Создать новый заказ")
     @PostMapping("/order/create")
     public ResponseEntity<Object> createOrder(@RequestBody OrderCreateRequestDto order) throws ResourceNotFoundException {

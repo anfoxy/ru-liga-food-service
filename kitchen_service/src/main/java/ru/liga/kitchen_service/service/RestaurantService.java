@@ -2,23 +2,15 @@ package ru.liga.kitchen_service.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.liga.kitchen_service.dto.KitchenResponseDto;
+
 import ru.liga.kitchen_service.exception.ResourceNotFoundException;
-import ru.liga.kitchen_service.feign.OrderFeign;
 import ru.liga.kitchen_service.mapper.DtoMapper;
 import ru.liga.kitchen_service.model.Restaurant;
-import ru.liga.kitchen_service.model.Order;
-import ru.liga.commons.status.StatusOrders;
 import ru.liga.kitchen_service.repository.RestaurantRepository;
-
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class RestaurantService {
-
-
 
     private final RestaurantRepository restaurantRepository;
     private final DtoMapper mapper;
@@ -39,4 +31,5 @@ public class RestaurantService {
         restaurantRepository.save(restaurantResponse);
         return restaurantResponse;
     }
+
 }

@@ -33,4 +33,5 @@ public class DistanceCalculator {
         double distance = earthRadius * haversinusFormula;
         return distance;
     }
+
 }

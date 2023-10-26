@@ -18,7 +18,7 @@ import ru.liga.kitchen_service.model.Restaurant;
 import ru.liga.kitchen_service.service.RestaurantService;
 import ru.liga.commons.status.StatusOrders;
 
-@Tag(name = "Api для работы с заказами")
+@Tag(name = "Api для работы с рестораном")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/restaurant")
