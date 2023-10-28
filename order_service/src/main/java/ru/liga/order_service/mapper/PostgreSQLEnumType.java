@@ -2,7 +2,6 @@ package ru.liga.order_service.mapper;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;

@@ -2,6 +2,7 @@ package ru.liga.delivery_service.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ import java.util.List;
 @Table(name = "courier")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
@@ -51,13 +53,4 @@ public class Courier implements Serializable {
     @JsonIgnore
     private List<Order> orders;
 
-    @Override
-    public String toString() {
-        return "Courier{" +
-                "id=" + id +
-                ", phone='" + phone + '\'' +
-                ", status='" + status + '\'' +
-                ", coordinates='" + coordinates + '\'' +
-                '}';
-    }
 }

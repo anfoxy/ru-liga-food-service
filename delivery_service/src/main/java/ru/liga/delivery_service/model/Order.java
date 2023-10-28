@@ -2,6 +2,7 @@ package ru.liga.delivery_service.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +34,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 public class Order implements Serializable {
 
@@ -64,16 +66,4 @@ public class Order implements Serializable {
     @JsonManagedReference
     private List<OrderItem> orderItems;
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", customer=" + customer +
-                ", restaurant=" + restaurant +
-                ", courier=" + courier +
-                ", status='" + status + '\'' +
-                ", timestamp='" + timestamp + '\'' +
-                ", orderItems=" + orderItems +
-                '}';
-    }
 }

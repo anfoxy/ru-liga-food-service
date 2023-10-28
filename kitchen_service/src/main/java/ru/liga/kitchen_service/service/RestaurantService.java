@@ -3,6 +3,8 @@ package ru.liga.kitchen_service.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import ru.liga.commons.status.StatusRestaurant;
+import ru.liga.kitchen_service.exception.CreationException;
 import ru.liga.kitchen_service.exception.ResourceNotFoundException;
 import ru.liga.kitchen_service.mapper.DtoMapper;
 import ru.liga.kitchen_service.model.Restaurant;
@@ -19,8 +21,19 @@ public class RestaurantService {
         return restaurantRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
-    public Restaurant createRestaurant(Restaurant restaurant) {
-        restaurant.setId(null);
+    public Restaurant createRestaurant(Restaurant restaurantRequest) throws CreationException {
+        if (restaurantRequest.getAddress() == null
+                || restaurantRequest.getStatus() == null
+                || restaurantRequest.getName() == null) {
+            throw new CreationException("Bad request");
+        }
+        Restaurant restaurant = Restaurant
+                .builder()
+                .status(restaurantRequest.getStatus())
+                .name(restaurantRequest.getName())
+                .address(restaurantRequest.getAddress())
+                .build();
+
         return restaurantRepository.save(restaurant);
     }
 
@@ -28,8 +41,11 @@ public class RestaurantService {
         Restaurant restaurantResponse = getRestaurantById(id);
         mapper.updateRestaurantFromDto(restaurantRequest, restaurantResponse);
         restaurantResponse.setId(id);
-        restaurantRepository.save(restaurantResponse);
-        return restaurantResponse;
+        return restaurantRepository.save(restaurantResponse);
     }
-
+    public Restaurant updateRestaurantStatus(Long id, StatusRestaurant restaurantActive) throws ResourceNotFoundException {
+        Restaurant restaurant = getRestaurantById(id);
+        restaurant.setStatus(restaurantActive);
+        return restaurantRepository.save(restaurant);
+    }
 }

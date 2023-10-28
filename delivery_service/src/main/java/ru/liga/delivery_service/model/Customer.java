@@ -2,6 +2,7 @@ package ru.liga.delivery_service.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import java.util.List;
 @Table(name = "customer")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Customer implements Serializable {
@@ -42,13 +44,4 @@ public class Customer implements Serializable {
     @JsonIgnore
     private List<Order> orders;
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                '}';
-    }
 }

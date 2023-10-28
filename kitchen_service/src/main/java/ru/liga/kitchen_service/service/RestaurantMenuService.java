@@ -40,14 +40,14 @@ public class RestaurantMenuService {
     }
 
     public void deleteRestaurantMenuById(Long id) throws ResourceNotFoundException {
-        RestaurantMenuItem restaurantMenuItem = restaurantMenuRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        RestaurantMenuItem restaurantMenuItem = getRestaurantMenuById(id);
         restaurantMenuItem.setStatus(StatusRestaurantMenu.RESTAURANT_MENU_DENIED);
         restaurantMenuRepository.save(restaurantMenuItem);
     }
 
     public RestaurantMenuItem updatePriceRestaurantMenu(Long id, Double price) throws ResourceNotFoundException {
 
-        RestaurantMenuItem restaurantMenuItem = restaurantMenuRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        RestaurantMenuItem restaurantMenuItem = getRestaurantMenuById(id);
         restaurantMenuItem.setPrice(price);
         restaurantMenuRepository.save(restaurantMenuItem);
 

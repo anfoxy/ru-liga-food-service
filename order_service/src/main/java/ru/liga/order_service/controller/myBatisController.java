@@ -24,15 +24,10 @@ import ru.liga.order_service.exception.ResourceNotFoundException;
 public class myBatisController {
 
     private final OrderMapper orderMapper;
-
     private final OrderItemMapper orderItemMapper;
-
     private final CourierMapper courierMapper;
-
     private final CustomerMapper customerMapper;
-
     private final RestaurantMapper restaurantMapper;
-
     private final RestaurantMenuMapper restaurantMenuMapper;
 
     @Operation(summary = "Получить заказ по ID")

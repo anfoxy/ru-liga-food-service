@@ -59,17 +59,4 @@ public class RestaurantMenuItem implements Serializable {
     @JsonIgnore
     private OrderItem orderItem;
 
-    @Override
-    public String toString() {
-        return "RestaurantMenuItem{" +
-                "id=" + id +
-                ", restaurant=" + restaurant +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", description='" + description + '\'' +
-                ", image='" + image + '\'' +
-                ", status='" + status + '\'' +
-                '}';
-    }
-
 }

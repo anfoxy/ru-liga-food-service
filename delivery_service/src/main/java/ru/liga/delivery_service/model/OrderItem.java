@@ -2,6 +2,7 @@ package ru.liga.delivery_service.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class OrderItem implements Serializable {
 
     @Id
@@ -46,14 +48,4 @@ public class OrderItem implements Serializable {
 
     private Integer quantity;
 
-    @Override
-    public String toString() {
-        return "OrderItem{" +
-                "id=" + id +
-                ", order=" + order.getId() +
-                ", restaurantMenuItem=" + restaurantMenuItem +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                '}';
-    }
 }

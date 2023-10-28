@@ -52,15 +52,15 @@ public class RestaurantMenuController {
     }
 
     @Operation(summary = "удалить меню ресторана по id")
-    @DeleteMapping("/deleted/{id}")
+    @DeleteMapping("/{id}/deleted")
     public ResponseEntity<String> deleteRestaurantMenu(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
         restaurantMenuService.deleteRestaurantMenuById(id);
         return ResponseEntity
                 .ok("RestaurantMenuItem with id:"+id+" deleted");
     }
 
-    @Operation(summary = "добавить меню ресторана")
-    @PutMapping("/update/{id}")
+    @Operation(summary = "обновить меню ресторана")
+    @PutMapping("/{id}/update")
     public ResponseEntity<Object> updatePriceRestaurantMenu(@PathVariable(value = "id") Long id, @RequestBody Map<String, String> json) throws ResourceNotFoundException {
         if (json.get("price") == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import ru.liga.commons.dto.DeliveryDto;
+import ru.liga.delivery_service.model.Order;
 
 import java.util.List;
 
@@ -16,9 +17,9 @@ public class DeliveriesResponseDto {
     private List<DeliveryDto> delivery;
 
     @Schema(description = "Индекс страницы")
-    private long pageIndex;
+    private int pageIndex;
 
     @Schema(description = "Количество страниц")
-    private long pageCount;
+    private int pageCount;
 
 }

@@ -1,4 +1,4 @@
-package ru.liga.order_service.exception;
+package ru.liga.delivery_service.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

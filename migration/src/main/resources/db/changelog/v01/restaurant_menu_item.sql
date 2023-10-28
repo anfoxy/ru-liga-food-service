@@ -3,7 +3,6 @@ create sequence if not exists restaurant_menu_item_seq;
 create type restaurant_menu_status AS ENUM
     (
     'RESTAURANT_MENU_ACTIVE',
-    'RESTAURANT_MENU_COMPLETE',
     'RESTAURANT_MENU_DENIED'
     );
 

@@ -11,7 +11,13 @@ public class ExceptionApiHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ErrorMessage handleException(ResourceNotFoundException exception) {
+    public ErrorMessage handleResourceNotFoundException(ResourceNotFoundException exception) {
+        return new ErrorMessage(exception.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CreationException.class)
+    public ErrorMessage handleCreationException(CreationException exception) {
         return new ErrorMessage(exception.getMessage());
     }
 

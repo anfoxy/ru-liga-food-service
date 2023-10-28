@@ -24,11 +24,11 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MessageSender sendMassageMQ;
 
-    public KitchenResponseDto getDeliveriesByStatus(StatusOrders status) throws ResourceNotFoundException {
+    public KitchenResponseDto getAllOrderByStatus(StatusOrders status,Long id) throws ResourceNotFoundException {
         if (status == null) {
             throw new ResourceNotFoundException();
         }
-        List<Order> orderList = orderRepository.findAllByStatus(status);
+        List<Order> orderList = orderRepository.findAllByStatusAndRestaurant_Id(status,id);
         KitchenResponseDto kitchenResponseDto = new KitchenResponseDto();
         kitchenResponseDto.setOrders(orderList);
         kitchenResponseDto.setPageIndex(1);
@@ -46,19 +46,20 @@ public class OrderService {
         return order;
     }
 
-    public Order updateOrderStatusById(Long id, String statusOrders) throws ResourceNotFoundException {
+    public Order updateOrderStatusById(Long id, StatusOrders statusOrders) throws  ResourceNotFoundException {
+
         Order order = null;
         try {
-            order = objectMapper.readValue(objectMapper.writeValueAsString(orderFeign.updateOrderStatusById(id,statusOrders).getBody()), Order.class);
+            order = objectMapper.readValue(objectMapper.writeValueAsString(orderFeign.updateOrderStatusById(id, String.valueOf(statusOrders)).getBody()), Order.class);
         } catch (JsonProcessingException e) {
             throw new ResourceNotFoundException();
         }
-
-        if(statusOrders.equals(StatusOrders.DELIVERY_PENDING.toString())){
+        if(statusOrders.equals(StatusOrders.DELIVERY_PENDING)){
             sendMassageMQ.sendOrder(tryToSerialyzeMessageAsString(order),order.getCustomer().getAddress());
         }
         return order;
     }
+
     private String tryToSerialyzeMessageAsString(Order messageModel) {
         String carInfoInLine = null;
         try {
