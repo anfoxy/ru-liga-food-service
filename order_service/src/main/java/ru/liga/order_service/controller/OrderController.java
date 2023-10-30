@@ -23,7 +23,7 @@ import ru.liga.order_service.service.OrderService;
 @Tag(name = "Api для работы с заказами")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/order/order")
 public class OrderController {
 
     private final OrderService orderService;

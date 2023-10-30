@@ -21,7 +21,7 @@ import ru.liga.order_service.service.CustomerService;
 @Tag(name = "Api для работы с клиентами")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/order/customer")
 public class CustomerController {
 
     final private CustomerService customerService;

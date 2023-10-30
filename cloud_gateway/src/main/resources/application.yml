@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: order
+          uri: http://127.0.0.1:8081/
+          predicates:
+            - Path=/order/**
+          filters:
+            - TokenRelay=
+            - RemoveRequestHeader=Cookie
+        - id: kitchen
+          uri: http://127.0.0.1:8082/
+          predicates:
+            - Path=/kitchen/**
+          filters:
+            - TokenRelay=
+            - RemoveRequestHeader=Cookie
+        - id: delivery
+          uri: http://127.0.0.1:8083/
+          predicates:
+            - Path=/delivery/**
+          filters:
+            - TokenRelay=
+            - RemoveRequestHeader=Cookie
+
+  security:
+    oauth2:
+      client:
+        registration:
+          gateway:
+            provider: spring
+            client-id: gateway
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            scope: openid,message.read
+        provider:
+          spring:
+            issuer-uri: http://localhost:9000

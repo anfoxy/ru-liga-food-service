@@ -14,6 +14,9 @@
 
     <properties>
         <java.version>11</java.version>
+        <oauth2.version>0.3.0</oauth2.version>
+        <spring-cloud.version>2021.0.8</spring-cloud.version>
+        <session.version>2.4.0</session.version>
         <log4j.version>1.2.17</log4j.version>
         <batis.version>3.5.6</batis.version>
         <feign.version>3.1.5</feign.version>
@@ -137,6 +140,28 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.session</groupId>
+                <artifactId>spring-session-core</artifactId>
+                <version>${session.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-authorization-server</artifactId>
+                <version>${oauth2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

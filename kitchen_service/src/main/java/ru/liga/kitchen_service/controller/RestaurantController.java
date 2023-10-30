@@ -23,7 +23,7 @@ import ru.liga.commons.status.StatusOrders;
 @Tag(name = "Api для работы с рестораном")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/restaurant")
+@RequestMapping("/kitchen/restaurant")
 public class RestaurantController {
 
     final private RestaurantService restaurantService;

@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.liga.commons.status.StatusOrders;
 
 
-@FeignClient(name = "order-service", url = "http://localhost:8080")
+@FeignClient(name = "order-service", url = "http://localhost:8081")
 public interface  OrderFeign {
 
-    @GetMapping("/order/{id}")
+    @GetMapping("/order/order/{id}")
     ResponseEntity<Object> getOrderById(@PathVariable("id") Long id);
 
-    @GetMapping("order/status")
+    @GetMapping("/order/order/status")
     ResponseEntity<Object> getAllOrderByStatus(@RequestParam("status") StatusOrders status);
 
-    @PutMapping("/order/{id}/update/status")
+    @PutMapping("/order/order/{id}/update/status")
     ResponseEntity<Object> updateOrderStatusById(@PathVariable("id") Long id, @RequestParam("status") String status);
 
 }

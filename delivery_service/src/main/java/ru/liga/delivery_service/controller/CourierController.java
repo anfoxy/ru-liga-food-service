@@ -23,7 +23,7 @@ import ru.liga.delivery_service.service.DeliveryService;
 @Tag(name = "Api для работы с курьерами")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/courier")
+@RequestMapping("/delivery/courier")
 public class CourierController {
 
     final private CourierService courierService;

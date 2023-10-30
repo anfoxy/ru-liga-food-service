@@ -20,7 +20,7 @@ import ru.liga.order_service.exception.ResourceNotFoundException;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/my_batis")
+@RequestMapping("/order/my_batis")
 public class myBatisController {
 
     private final OrderMapper orderMapper;

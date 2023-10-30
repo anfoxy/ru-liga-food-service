@@ -22,7 +22,7 @@ import java.util.Map;
 @Tag(name = "Api для работы с меню ресторана")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/restaurant_menu")
+@RequestMapping("/kitchen/restaurant_menu")
 public class RestaurantMenuController {
 
     final private RestaurantMenuService restaurantMenuService;
