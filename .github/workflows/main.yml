@@ -2,7 +2,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: ["hometask-7"]
+    branches: ["hometask-8"]
 
 jobs:
   build:
