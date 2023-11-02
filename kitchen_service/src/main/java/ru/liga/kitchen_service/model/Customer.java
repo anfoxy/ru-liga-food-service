@@ -51,4 +51,5 @@ public class Customer implements Serializable {
                 ", address='" + address + '\'' +
                 '}';
     }
+
 }

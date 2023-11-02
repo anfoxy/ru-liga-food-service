@@ -25,7 +25,6 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
 
-
 @Entity
 @Table(name = "restaurant")
 @Getter
@@ -51,7 +50,7 @@ public class Restaurant implements Serializable {
     @Type(type = "pgsql_enum")
     private StatusRestaurant status;
 
-   @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Order> orders;
 
@@ -68,4 +67,5 @@ public class Restaurant implements Serializable {
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }

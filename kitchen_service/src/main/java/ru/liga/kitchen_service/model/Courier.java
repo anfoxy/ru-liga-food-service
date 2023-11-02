@@ -60,4 +60,5 @@ public class Courier implements Serializable {
                 ", coordinates='" + coordinates + '\'' +
                 '}';
     }
+
 }

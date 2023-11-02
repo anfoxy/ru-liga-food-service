@@ -3,10 +3,11 @@ package ru.liga.kitchen_service.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import ru.liga.commons.dto.dto_model.RestaurantDto;
 import ru.liga.commons.status.StatusRestaurant;
 import ru.liga.kitchen_service.exception.CreationException;
 import ru.liga.kitchen_service.exception.ResourceNotFoundException;
-import ru.liga.kitchen_service.mapper.DtoMapper;
+import ru.liga.kitchen_service.mapper.RestaurantMapper;
 import ru.liga.kitchen_service.model.Restaurant;
 import ru.liga.kitchen_service.repository.RestaurantRepository;
 
@@ -15,18 +16,22 @@ import ru.liga.kitchen_service.repository.RestaurantRepository;
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
-    private final DtoMapper mapper;
+    private final RestaurantMapper mapper;
 
-    public Restaurant getRestaurantById(Long id) throws ResourceNotFoundException {
-        return restaurantRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    public RestaurantDto getRestaurantById(Long id) {
+        return mapper
+                .toDTO(restaurantRepository
+                        .findById(id)
+                        .orElseThrow(ResourceNotFoundException::new));
     }
 
-    public Restaurant createRestaurant(Restaurant restaurantRequest) throws CreationException {
+    public RestaurantDto createRestaurant(RestaurantDto restaurantRequest) {
         if (restaurantRequest.getAddress() == null
                 || restaurantRequest.getStatus() == null
                 || restaurantRequest.getName() == null) {
             throw new CreationException("Bad request");
         }
+
         Restaurant restaurant = Restaurant
                 .builder()
                 .status(restaurantRequest.getStatus())
@@ -34,18 +39,23 @@ public class RestaurantService {
                 .address(restaurantRequest.getAddress())
                 .build();
 
-        return restaurantRepository.save(restaurant);
+        return mapper
+                .toDTO(restaurantRepository.save(restaurant));
     }
 
-    public Restaurant restaurantUpdate(Long id, Restaurant restaurantRequest) throws ResourceNotFoundException {
-        Restaurant restaurantResponse = getRestaurantById(id);
+    public RestaurantDto restaurantUpdate(Long id, RestaurantDto restaurantRequest) {
+        Restaurant restaurantResponse = mapper.toModel(getRestaurantById(id));
         mapper.updateRestaurantFromDto(restaurantRequest, restaurantResponse);
         restaurantResponse.setId(id);
-        return restaurantRepository.save(restaurantResponse);
+        return mapper
+                .toDTO(restaurantRepository.save(restaurantResponse));
     }
-    public Restaurant updateRestaurantStatus(Long id, StatusRestaurant restaurantActive) throws ResourceNotFoundException {
-        Restaurant restaurant = getRestaurantById(id);
+
+    public RestaurantDto updateRestaurantStatus(Long id, StatusRestaurant restaurantActive) {
+        Restaurant restaurant = mapper.toModel(getRestaurantById(id));
         restaurant.setStatus(restaurantActive);
-        return restaurantRepository.save(restaurant);
+        return mapper
+                .toDTO(restaurantRepository.save(restaurant));
     }
+
 }

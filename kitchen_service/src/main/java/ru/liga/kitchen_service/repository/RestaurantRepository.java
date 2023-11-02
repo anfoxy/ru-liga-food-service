@@ -5,7 +5,8 @@ import ru.liga.kitchen_service.model.Restaurant;
 
 import java.util.List;
 
-public interface RestaurantRepository extends JpaRepository<Restaurant,Long> {
+public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     List<Restaurant> findAllByStatus(String status);
+
 }

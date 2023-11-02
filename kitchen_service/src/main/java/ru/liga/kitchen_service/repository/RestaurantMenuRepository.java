@@ -5,7 +5,8 @@ import ru.liga.kitchen_service.model.RestaurantMenuItem;
 
 import java.util.List;
 
-public interface RestaurantMenuRepository extends JpaRepository<RestaurantMenuItem,Long> {
+public interface RestaurantMenuRepository extends JpaRepository<RestaurantMenuItem, Long> {
 
     List<RestaurantMenuItem> findAllByRestaurant_Id(Long id);
+
 }

@@ -12,11 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.liga.order_service.exception.CreationException;
-import ru.liga.order_service.exception.ResourceNotFoundException;
-import ru.liga.order_service.model.Customer;
+import ru.liga.commons.dto.dto_model.CustomerDto;
 import ru.liga.order_service.service.CustomerService;
-
 
 @Tag(name = "Api для работы с клиентами")
 @RequiredArgsConstructor
@@ -28,7 +25,7 @@ public class CustomerController {
 
     @Operation(summary = "Получить клиента по ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getCustomerById(@PathVariable("id") Long id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getCustomerById(@PathVariable("id") Long id) {
         if (id <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
@@ -38,16 +35,16 @@ public class CustomerController {
 
     @Operation(summary = "Создать нового клиента")
     @PostMapping("/create")
-    public ResponseEntity<Object> createCustomer(@RequestBody Customer customer) throws ResourceNotFoundException, CreationException {
+    public ResponseEntity<Object> createCustomer(@RequestBody CustomerDto customer) {
         return ResponseEntity
                 .ok(customerService.customerCreate(customer));
     }
 
     @Operation(summary = "Обновить данные клиента по ID")
     @PutMapping("/{id}/update")
-    public ResponseEntity<Object> updateCustomerById(@PathVariable("id") Long id, @RequestBody Customer customer) throws ResourceNotFoundException {
+    public ResponseEntity<Object> updateCustomerById(@PathVariable("id") Long id, @RequestBody CustomerDto customerDTO) {
         return ResponseEntity
-                .ok(customerService.customerUpdate(id, customer));
+                .ok(customerService.customerUpdate(id, customerDTO));
     }
 
 }

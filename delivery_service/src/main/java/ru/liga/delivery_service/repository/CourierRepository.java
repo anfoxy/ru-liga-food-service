@@ -6,9 +6,8 @@ import ru.liga.delivery_service.model.Courier;
 
 import java.util.List;
 
+public interface CourierRepository extends JpaRepository<Courier, Long> {
 
-public interface CourierRepository extends JpaRepository<Courier,Long> {
+    List<Courier> findAllByStatus(StatusCourier statusCourier);
 
-
-    List<Courier> findAllByIdAndStatus(Long id, StatusCourier statusCourier);
 }
