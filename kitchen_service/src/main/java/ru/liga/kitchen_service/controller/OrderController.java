@@ -32,7 +32,7 @@ public class OrderController {
                 .ok(orderService.getOrderById(id));
     }
 
-    @Operation(summary = "Получить активные или завершенные доставки")
+    @Operation(summary = "Получить заказы ресторана по статусу")
     @GetMapping("/{restaurant_id}/status")
     public ResponseEntity<Object> getAllOrderByStatus(@PathVariable("restaurant_id") Long id,
                                                       @RequestParam("status") StatusOrders status) {
@@ -40,15 +40,25 @@ public class OrderController {
                 .ok(orderService.getAllOrderByStatus(status, id));
     }
 
-    @Operation(summary = "Обновить статус заказа по ID")
-    @PutMapping("/{id}/update/status")
-    public ResponseEntity<Object> updateOrderStatusById(@PathVariable("id") Long id,
-                                                        @RequestParam("status") StatusOrders status) {
+    @Operation(summary = "Подтвердить курьера заказа")
+    @PutMapping("/{id}/courier/{id_courier}/picking")
+    public ResponseEntity<Object> pickingOrderById(@PathVariable("id") Long id,
+                                                        @PathVariable("id_courier") Long id_courier) {
         if (id <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.updateOrderStatusById(id, status));
+                .ok(orderService.pickingOrderById(id,id_courier));
+    }
+
+    @Operation(summary = "Завершить приготовление заказа на кухне с заданным ID")
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<Object> completeOrderById(@PathVariable("id") Long id) {
+        if (id <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
+        }
+        return ResponseEntity
+                .ok(orderService.completeOrderById(id, StatusOrders.DELIVERY_PENDING));
     }
 
     @Operation(summary = "принять заказ с заданным ID")
@@ -58,7 +68,17 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.updateOrderStatusById(id, StatusOrders.KITCHEN_ACCEPTED));
+                .ok(orderService.updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_ACCEPTED));
+    }
+
+    @Operation(summary = "Установить заказ с заданным ID на процесс приготовления")
+    @PutMapping("/{id}/preparing")
+    public ResponseEntity<Object> preparingOrderById(@PathVariable("id") Long id) {
+        if (id <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
+        }
+        return ResponseEntity
+                .ok(orderService.updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_PREPARING));
     }
 
     @Operation(summary = "Отказаться от заказа с заданным ID")
@@ -68,7 +88,7 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.updateOrderStatusById(id, StatusOrders.KITCHEN_DENIED));
+                .ok(orderService.deniedOrderById(id, StatusOrders.KITCHEN_DENIED));
     }
 
 }

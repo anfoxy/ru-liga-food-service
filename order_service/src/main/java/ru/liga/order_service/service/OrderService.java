@@ -1,6 +1,7 @@
 package ru.liga.order_service.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.commons.dto.dto_model.OrderDto;
 import ru.liga.order_service.mapper.OrderListMapper;
@@ -19,6 +20,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OrderService {
 
@@ -71,11 +73,14 @@ public class OrderService {
     }
 
     public OrderCreateResponseDto orderCreate(OrderCreateRequestDto orderDto) {
+        log.info("OrderCreateResponseDto input data: " + orderDto);
         Order order = orderCreateFromDto(orderDto);
+        log.info("the order was saved: " + order);
         OrderCreateResponseDto orderCreateResponseDto = new OrderCreateResponseDto();
         orderCreateResponseDto.setId(order.getId());
         orderCreateResponseDto.setEstimatedTimeOfArrival(timeCalculator.calculator(order));
         orderCreateResponseDto.setSecretPaymentUrl(paymentService.pay(order));
+        log.info("response to the customer's request to create an order: " + orderCreateResponseDto);
         return orderCreateResponseDto;
     }
 
@@ -84,16 +89,25 @@ public class OrderService {
                 .builder()
                 .customer(customerRepository
                         .findById(orderDto.getCustomer())
-                        .orElseThrow(() -> new ResourceNotFoundException("not found Customer")))
+                        .orElseThrow(() -> {
+                            log.error("not found Customer by id = " + orderDto.getCustomer());
+                            return new ResourceNotFoundException("not found Customer");
+                        }))
                 .restaurant(restaurantRepository
                         .findById(orderDto.getRestaurant())
-                        .orElseThrow(() -> new ResourceNotFoundException("not found Restaurant")))
+                        .orElseThrow(() -> {
+                            log.error("not found Restaurant by id = " + orderDto.getCustomer());
+                            return new ResourceNotFoundException("not found Restaurant");
+                        }))
                 .status(StatusOrders.CUSTOMER_CREATED)
                 .timestamp(ZonedDateTime.now())
                 .build();
         order.setOrderItems(orderItemService.getOrderItemListFromDto(order, orderDto.getOrderItems()));
+        log.info("order created: " + order);
         orderRepository.save(order);
         orderItemService.createListOrderItem(order.getOrderItems());
+        log.info("the order is saved: " + order);
+
         return order;
     }
 

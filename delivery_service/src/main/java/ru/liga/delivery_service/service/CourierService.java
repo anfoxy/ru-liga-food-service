@@ -3,9 +3,6 @@ package ru.liga.delivery_service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.liga.commons.dto.CustomerForDeliveryDTO;
-import ru.liga.commons.dto.DeliveryDto;
-import ru.liga.commons.dto.RestaurantForDeliveryDTO;
 import ru.liga.commons.dto.dto_model.CourierDto;
 import ru.liga.commons.dto.dto_model.OrderDto;
 import ru.liga.commons.status.StatusCourier;
@@ -28,7 +25,7 @@ public class CourierService {
     private final CourierMapper mapper;
     private final CourierListMapper listMapper;
     private final DistanceCalculator distanceCalculator;
-    private final DeliveryCostCalculator deliveryCostCalculator;
+    private final OrderToDeliveryConverter toDeliveryConverter;
     private final LocalityDeterminant localityDeterminant;
     private final MessageSenderCourier messageSender;
 
@@ -82,12 +79,18 @@ public class CourierService {
         return closestCourier;
     }
 
-    public CourierDto courierUpdate(Long id, CourierDto courierRequest) {
+    public CourierDto courierUpdateById(Long id, CourierDto courierRequest) {
         Courier courierResponse = mapper.toModel(getCourierById(id));
         mapper.updateCourierFromDto(courierRequest, courierResponse);
         courierResponse.setId(id);
-        return mapper
-                .toDTO(courierRepository
+        return mapper.toDTO(courierRepository
+                        .save(courierResponse));
+    }
+
+    public void courierUpdateStatusById(Long id, StatusCourier statusCourier) {
+        Courier courierResponse = mapper.toModel(getCourierById(id));
+        courierResponse.setStatus(statusCourier);
+        mapper.toDTO(courierRepository
                         .save(courierResponse));
     }
 
@@ -97,34 +100,13 @@ public class CourierService {
 
         if (courierDto != null) {
             log.info("CourierService: The nearest courier has been found: " + courierDto);
-            messageSender.sendMessage(deliveryDtoCreateFromOrder(orderDto, courierDto));
+            messageSender.sendMessage(toDeliveryConverter.deliveryDtoCreateFromOrder(orderDto, courierDto));
             return;
         }
         log.info("CourierService: The nearest courier was not found");
         //доделать с ожиданием
     }
 
-    private DeliveryDto deliveryDtoCreateFromOrder(OrderDto orderDto, CourierDto courierDto) {
-        DeliveryDto delivery = DeliveryDto
-                .builder()
-                .restaurant(RestaurantForDeliveryDTO
-                        .builder()
-                        .address(orderDto.getRestaurant().getAddress())
-                        .distance(distanceCalculator.calculator(courierDto.getCoordinates(), orderDto.getRestaurant().getAddress()))
-                        .build())
-                .customer(CustomerForDeliveryDTO
-                        .builder()
-                        .address(orderDto.getCustomer().getAddress())
-                        .distance(distanceCalculator.calculator(courierDto.getCoordinates(), orderDto.getCustomer().getAddress()))
-                        .build())
-                .payment(deliveryCostCalculator
-                        .calculator(distanceCalculator
-                                .calculator(orderDto.getRestaurant().getAddress(), orderDto.getCustomer().getAddress())))
-                .orderId(orderDto.getId())
-                .courierId(courierDto.getId())
-                .orderAction(orderDto.getStatus())
-                .build();
-        return delivery;
-    }
+
 
 }

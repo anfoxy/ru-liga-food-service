@@ -44,7 +44,7 @@ public class CourierController {
     @PutMapping("/{id}/update")
     public ResponseEntity<Object> updateCourierById(@PathVariable("id") Long id, @RequestBody CourierDto courier) {
         return ResponseEntity
-                .ok(courierService.courierUpdate(id, courier));
+                .ok(courierService.courierUpdateById(id, courier));
     }
 
 }

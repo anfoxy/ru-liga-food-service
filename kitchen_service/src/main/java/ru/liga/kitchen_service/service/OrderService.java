@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.liga.commons.dto.dto_model.CourierDto;
 import ru.liga.commons.dto.dto_model.OrderDto;
 import ru.liga.commons.status.StatusOrders;
 import ru.liga.kitchen_service.dto.KitchenResponseDto;
@@ -52,31 +53,35 @@ public class OrderService {
                 .toDTO(orderRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 
-    public OrderDto updateOrderStatusById(Long id, StatusOrders statusOrders) {
-        if (!(statusOrders.equals(StatusOrders.KITCHEN_DENIED)
-                || statusOrders.equals(StatusOrders.KITCHEN_ACCEPTED)
-                || statusOrders.equals(StatusOrders.KITCHEN_PREPARING)
-                || statusOrders.equals(StatusOrders.KITCHEN_REFUNDED)
-                || statusOrders.equals(StatusOrders.DELIVERY_PENDING)
-                || statusOrders.equals(StatusOrders.DELIVERY_PICKING)
-                || statusOrders.equals(StatusOrders.DELIVERY_DENIED))) {
-            throw new RequestException("invalid status");
-        }
+    public OrderDto updateOrderStatusByIdAndSendMessage(Long id, StatusOrders statusOrders) {
         ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(statusOrders));
         OrderDto order = getOrderFromResponseEntity(responseEntity);
 
         senderCustomerMassageMQ.sendOrder(order);
-
-        switch (statusOrders) {
-            case KITCHEN_DENIED:
-            case DELIVERY_DENIED:
-                paymentService.refund(order);
-                break;
-            case DELIVERY_PENDING:
-                senderCourierMassageMQ.sendOrder(order);
-                break;
-        }
         return order;
+    }
+
+    public OrderDto deniedOrderById(Long id, StatusOrders statusOrders) {
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, statusOrders);
+        paymentService.refund(order);
+        return order;
+    }
+
+    public OrderDto completeOrderById(Long id, StatusOrders statusOrders) {
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, statusOrders);
+        senderCourierMassageMQ.sendOrder(order);
+        return order;
+    }
+
+    public OrderDto pickingOrderById(Long idOrder, Long idCourier) {
+        OrderDto order = getOrderById(idOrder);
+        order.setCourier(new CourierDto().setId(idCourier));
+        order.setStatus(StatusOrders.DELIVERY_PICKING);
+
+        ResponseEntity<Object> orderResponseEntity = orderFeign.updateOrderById(idOrder, order);
+        OrderDto newOrder = getOrderFromResponseEntity(orderResponseEntity);
+        senderCustomerMassageMQ.sendOrder(newOrder);
+        return newOrder;
     }
 
     private OrderDto getOrderFromResponseEntity(ResponseEntity<Object> responseEntity) {
