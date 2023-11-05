@@ -19,6 +19,8 @@
     <modules>
         <module>dependency_bom</module>
         <module>order_service</module>
+        <module>auth_service</module>
+        <module>cloud_gateway</module>
         <module>kitchen_service</module>
         <module>delivery_service</module>
         <module>notification_service</module>

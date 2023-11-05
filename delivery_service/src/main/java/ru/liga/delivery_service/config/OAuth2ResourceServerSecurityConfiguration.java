@@ -14,7 +14,7 @@ public class OAuth2ResourceServerSecurityConfiguration {
                 .mvcMatcher("/**")
                 .authorizeRequests()
                 .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
-                .permitAll() // Разрешите анонимный доступ
+                .permitAll()
                 .mvcMatchers("/**")
                 .access("hasAuthority('SCOPE_message.read')")
                 .and()

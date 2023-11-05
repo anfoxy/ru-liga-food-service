@@ -11,10 +11,10 @@ import ru.liga.commons.dto.dto_model.OrderDto;
 @FeignClient(name = "${order.feign.name}", url = "${order.url}")
 public interface OrderFeign {
 
-    @PutMapping("/order/{id}/update/status")
+    @PutMapping("/order-service/order/{id}/update/status")
     ResponseEntity<Object> updateOrderStatusById(@PathVariable("id") Long id, @RequestParam("status") String status);
 
-    @PutMapping("/order/{id}/update")
+    @PutMapping("/order-service/order/{id}/update")
     ResponseEntity<Object> updateOrderById(@PathVariable("id") Long id, @RequestBody OrderDto order);
 
 }
