@@ -6,7 +6,6 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import ru.liga.kitchen_service.model.Restaurant;
 
-
 @Mapper(componentModel = "spring")
 public interface DtoMapper {
 

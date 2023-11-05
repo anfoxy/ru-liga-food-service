@@ -5,18 +5,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * OAuth конфигурация.
- *
- */
 @EnableWebSecurity
 public class OAuth2ResourceServerSecurityConfiguration {
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .mvcMatcher("/**")
                 .authorizeRequests()
+                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                .permitAll() // Разрешите анонимный доступ
                 .mvcMatchers("/**")
                 .access("hasAuthority('SCOPE_message.read')")
                 .and()
@@ -24,5 +22,4 @@ public class OAuth2ResourceServerSecurityConfiguration {
                 .jwt();
         return http.build();
     }
-
 }

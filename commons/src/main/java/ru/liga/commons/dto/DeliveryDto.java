@@ -1,8 +1,13 @@
 package ru.liga.commons.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import ru.liga.commons.status.StatusOrders;
 
@@ -10,20 +15,29 @@ import ru.liga.commons.status.StatusOrders;
 @Data
 @Builder
 @Accessors(chain = true)
+@ToString
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeliveryDto {
 
     @Schema(description = "ID заказа")
     private Long orderId;
 
+    @Schema(description = "ID курьера")
+    private Long courierId;
+
     @Schema(description = "Ресторан")
-    private RestaurantDTO restaurant;
+    private RestaurantForDeliveryDTO restaurant;
 
     @Schema(description = "Клиент")
-    private CustomerDTO customer;
+    private CustomerForDeliveryDTO customer;
 
     @Schema(description = "Оплата")
     private Double payment;
 
     @Schema(description = "Статус")
     private StatusOrders orderAction;
+
 }

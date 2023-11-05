@@ -14,22 +14,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.liga.order_service.dto.OrderItemCreateRequestDto;
-import ru.liga.order_service.exception.CreationException;
-import ru.liga.order_service.exception.ResourceNotFoundException;
-import ru.liga.order_service.model.OrderItem;
+import ru.liga.commons.dto.dto_model.OrderItemDto;
 import ru.liga.order_service.service.OrderItemService;
 
 @Tag(name = "Api для работы с пунктом заказа")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/order/order_item")
+@RequestMapping("/order-service/order_item")
 public class OrderItemController {
 
     final private OrderItemService orderItemMenuService;
 
     @Operation(summary = "Получить пункт заказа по ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOrderItemById(@PathVariable("id") Long id) throws ResourceNotFoundException {
+    public ResponseEntity<Object> getOrderItemById(@PathVariable("id") Long id) {
         if (id <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
@@ -49,21 +47,21 @@ public class OrderItemController {
 
     @Operation(summary = "добавить пункт заказа")
     @PostMapping("/create")
-    public ResponseEntity<Object> createOrderItem(@RequestBody OrderItemCreateRequestDto orderItem) throws ResourceNotFoundException, CreationException {
+    public ResponseEntity<Object> createOrderItem(@RequestBody OrderItemCreateRequestDto orderItem) {
         return ResponseEntity
                 .ok(orderItemMenuService.createOrderItem(orderItem));
     }
 
     @Operation(summary = "Обновить данные заказа по ID")
     @PutMapping("/{id}/update")
-    public ResponseEntity<Object> updateOrderItemMenuById(@PathVariable("id") Long id, @RequestBody OrderItem order) throws ResourceNotFoundException {
+    public ResponseEntity<Object> updateOrderItemMenuById(@PathVariable("id") Long id, @RequestBody OrderItemDto orderItemDto) {
         return ResponseEntity
-                .ok(orderItemMenuService.orderItemMenuUpdate(id, order));
+                .ok(orderItemMenuService.orderItemMenuUpdate(id, orderItemDto));
     }
 
     @Operation(summary = "удалить пункт заказа по id")
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<String> deleteOrderItem(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+    public ResponseEntity<String> deleteOrderItem(@PathVariable(value = "id") Long id) {
         orderItemMenuService.deleteOrderItemById(id);
         return ResponseEntity
                 .ok("OrderItem with id:" + id + " deleted");

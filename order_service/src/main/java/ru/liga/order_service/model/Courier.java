@@ -2,6 +2,7 @@ package ru.liga.order_service.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import ru.liga.commons.status.StatusCourier;
 import ru.liga.order_service.mapper.PostgreSQLEnumType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,6 +29,7 @@ import java.util.List;
 @Table(name = "courier")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)

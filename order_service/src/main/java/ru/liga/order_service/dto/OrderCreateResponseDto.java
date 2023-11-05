@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.time.ZonedDateTime;
+
 @Schema(description = "Ответ на создание заказа")
 @Data
 @Accessors(chain = true)
@@ -16,6 +18,6 @@ public class OrderCreateResponseDto {
     private String secretPaymentUrl;
 
     @Schema(description = "Предполагаемое время прибытия")
-    private String estimatedTimeOfArrival;
+    private ZonedDateTime estimatedTimeOfArrival;
 
 }

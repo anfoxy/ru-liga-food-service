@@ -21,4 +21,16 @@ public class ExceptionApiHandler {
         return new ErrorMessage(exception.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ServerException.class)
+    public ErrorMessage handleServerException(ServerException exception) {
+        return new ErrorMessage(exception.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RequestException.class)
+    public ErrorMessage handleRequestException(RequestException exception) {
+        return new ErrorMessage(exception.getMessage());
+    }
+
 }
