@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.liga.commons.status.StatusOrders;
 import ru.liga.delivery_service.service.DeliveryService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Tag(name = "Api для работы с доставкой")
 @RequiredArgsConstructor
 @RestController
@@ -43,36 +45,37 @@ public class DeliveryController {
     @PutMapping("/accepted/")
     public ResponseEntity<Object> acceptedDeliveryById(
             @RequestParam("id_order") Long idOrder,
-            @RequestParam("id_courier") Long idCourier) {
+            @RequestParam("id_courier") Long idCourier,
+            HttpServletRequest request) {
         return ResponseEntity
-                .ok(orderService.acceptedDelivery(idOrder, idCourier));
+                .ok(orderService.acceptedDelivery(idOrder, idCourier, request));
     }
 
     @Operation(summary = "отменить доставку")
     @PutMapping("/{order_id}/denied")
-    public ResponseEntity<Object> deniedDeliveryById(@PathVariable("order_id") Long id) {
+    public ResponseEntity<Object> deniedDeliveryById(@PathVariable("order_id") Long id, HttpServletRequest request) {
         return ResponseEntity
-                .ok(orderService.deniedDelivery(id));
+                .ok(orderService.deniedDelivery(id, request));
     }
 
     @Operation(summary = "Доставка заказа")
     @PutMapping("/{order_id}/delivering")
-    public ResponseEntity<Object> deliveringDeliveryById(@PathVariable("order_id") Long id) {
+    public ResponseEntity<Object> deliveringDeliveryById(@PathVariable("order_id") Long id, HttpServletRequest request) {
         if (id <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.deliveringDelivery(id));
+                .ok(orderService.deliveringDelivery(id, request));
     }
 
     @Operation(summary = "Доставка заказа")
     @PutMapping("/{order_id}/complete")
-    public ResponseEntity<Object> completeDeliveryById(@PathVariable("order_id") Long id) {
+    public ResponseEntity<Object> completeDeliveryById(@PathVariable("order_id") Long id, HttpServletRequest request) {
         if (id <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.completeDelivery(id));
+                .ok(orderService.completeDelivery(id, request));
     }
 
 }

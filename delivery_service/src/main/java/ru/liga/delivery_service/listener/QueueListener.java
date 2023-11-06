@@ -6,16 +6,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.liga.commons.dto.ConfirmCourierDto;
 import ru.liga.commons.dto.dto_model.CourierDto;
 import ru.liga.commons.dto.dto_model.OrderDto;
-import ru.liga.delivery_service.feign.RestaurantFeign;
 import ru.liga.delivery_service.service.CourierService;
 import ru.liga.delivery_service.service.impl.MessageSenderCourier;
+import ru.liga.delivery_service.service.impl.MessageSenderRestaurant;
 import ru.liga.delivery_service.service.impl.OrderToDeliveryConverter;
-
 
 @Service
 @Slf4j
@@ -25,7 +22,7 @@ public class QueueListener {
     private final CourierService courierService;
     private final MessageSenderCourier messageSender;
     private final OrderToDeliveryConverter toDeliveryConverter;
-    private final RestaurantFeign restaurantFeign;
+    private final MessageSenderRestaurant senderRestaurantMassageMQ;
 
     @RabbitListener(queues = "queueNizhegorodsky")
     public void processQueueNizhegorodsky(String message) {
@@ -78,12 +75,8 @@ public class QueueListener {
             log.info("CourierService: The nearest courier has been found: " + courierDto);
             messageSender.sendMessage(toDeliveryConverter.deliveryDtoCreateFromOrder(orderDto, courierDto));
         } else {
-            ConfirmCourierDto confirmCourierDto = ConfirmCourierDto
-                    .builder()
-                    .status("Not found")
-                    .build();
-
-            restaurantFeign.pickingOrderById(confirmCourierDto);
+            senderRestaurantMassageMQ.sendMessage("At the request of the restorer with the ID 1," +
+                    " no couriers were found available");
             log.info("CourierService: The nearest courier was not found");
         }
     }

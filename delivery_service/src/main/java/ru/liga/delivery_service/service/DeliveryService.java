@@ -4,6 +4,8 @@ import ru.liga.commons.dto.dto_model.OrderDto;
 import ru.liga.commons.status.StatusOrders;
 import ru.liga.delivery_service.dto.DeliveriesResponseDto;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 public interface DeliveryService {
 
@@ -11,12 +13,12 @@ public interface DeliveryService {
 
     DeliveriesResponseDto getDeliveriesByStatus(Long id, StatusOrders orderAction);
 
-    OrderDto acceptedDelivery(Long idOrder, Long idCourier);
+    OrderDto acceptedDelivery(Long idOrder, Long idCourier, HttpServletRequest request);
 
-    OrderDto deniedDelivery(Long id);
+    OrderDto deniedDelivery(Long id, HttpServletRequest request);
 
-    OrderDto completeDelivery(Long id);
+    OrderDto completeDelivery(Long id, HttpServletRequest request);
 
-    OrderDto deliveringDelivery(Long id);
+    OrderDto deliveringDelivery(Long id, HttpServletRequest request);
 
 }

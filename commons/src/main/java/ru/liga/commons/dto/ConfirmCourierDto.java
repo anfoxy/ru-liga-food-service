@@ -21,9 +21,6 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 public class ConfirmCourierDto {
 
-    @Schema(description = "Статус")
-    private String status;
-
     @Schema(description = "Id курьера")
     private Long courierID;
 

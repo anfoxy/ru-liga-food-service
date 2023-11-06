@@ -13,15 +13,14 @@ import ru.liga.commons.exception.CreationException;
 import ru.liga.commons.exception.ResourceNotFoundException;
 import ru.liga.commons.exception.ServerException;
 import ru.liga.commons.mapper.OrderMapper;
-import ru.liga.commons.model.Order;
 import ru.liga.commons.repositories.OrderRepository;
 import ru.liga.commons.status.StatusOrders;
-import ru.liga.kitchen_service.dto.KitchenResponseDto;
 import ru.liga.kitchen_service.feign.OrderFeign;
 import ru.liga.kitchen_service.service.OrderService;
 import ru.liga.kitchen_service.service.PaymentService;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+
 
 @Service
 @Slf4j
@@ -38,37 +37,33 @@ public class OrderServiceImpl implements OrderService {
     private final PaymentService paymentService;
 
     @Override
-    public OrderDto deniedOrderById(Long id) {
-        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_DENIED);
+    public OrderDto deniedOrderById(Long id, HttpServletRequest request) {
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_DENIED,request);
         paymentService.refund(order);
         return order;
     }
 
     @Override
-    public OrderDto completeOrderById(Long id) {
-        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.DELIVERY_PENDING);
+    public OrderDto completeOrderById(Long id, HttpServletRequest request) {
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.DELIVERY_PENDING,request);
         senderCourierMassageMQ.sendOrder(order);
         return order;
     }
 
     @Override
-    public OrderDto acceptedOrderById(Long id) {
-        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_ACCEPTED);
+    public OrderDto acceptedOrderById(Long id, HttpServletRequest request) {
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_ACCEPTED,request);
         return order;
     }
 
     @Override
-    public OrderDto preparingOrderById(Long id) {
-        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_PREPARING);
+    public OrderDto preparingOrderById(Long id, HttpServletRequest request) {
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_PREPARING,request);
         return order;
     }
 
     @Override
-    public OrderDto confirmCourier(ConfirmCourierDto confirmCourierDto) {
-        if (!confirmCourierDto.getStatus().equals("OK")) {
-            senderRestaurantMassageMQ.sendMessage("There are no couriers available");
-            return null;
-        }
+    public OrderDto confirmCourier(ConfirmCourierDto confirmCourierDto, HttpServletRequest request) {
 
         OrderDto order = orderMapper.toDTO(orderRepository
                 .findById(confirmCourierDto.getOrderID())
@@ -80,8 +75,8 @@ public class OrderServiceImpl implements OrderService {
 
         order.setCourier(new CourierDto().setId(confirmCourierDto.getCourierID()));
         order.setStatus(StatusOrders.DELIVERY_PICKING);
-
-        ResponseEntity<Object> orderResponseEntity = orderFeign.updateOrderById(confirmCourierDto.getOrderID(), order);
+        String authorizationHeader = request.getHeader("Authorization");
+        ResponseEntity<Object> orderResponseEntity = orderFeign.updateOrderById(confirmCourierDto.getOrderID(), order, authorizationHeader);
         OrderDto newOrder = getOrderFromResponseEntity(orderResponseEntity);
         senderCustomerMassageMQ.sendOrder(newOrder);
         senderRestaurantMassageMQ.sendMessage("Found a courier with id " + confirmCourierDto.getCourierID()
@@ -89,8 +84,9 @@ public class OrderServiceImpl implements OrderService {
         return newOrder;
     }
 
-    private OrderDto updateOrderStatusByIdAndSendMessage(Long id, StatusOrders statusOrders) {
-        ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(statusOrders));
+    private OrderDto updateOrderStatusByIdAndSendMessage(Long id, StatusOrders statusOrders, HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(statusOrders), authorizationHeader);
         OrderDto order = getOrderFromResponseEntity(responseEntity);
         senderCustomerMassageMQ.sendOrder(order);
         return order;

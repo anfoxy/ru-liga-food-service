@@ -22,9 +22,8 @@ import ru.liga.delivery_service.feign.RestaurantFeign;
 import ru.liga.delivery_service.service.CourierService;
 import ru.liga.delivery_service.service.DeliveryService;
 import ru.liga.delivery_service.service.PaymentService;
-import ru.liga.delivery_service.service.impl.MessageSenderCustomer;
-import ru.liga.delivery_service.service.impl.OrderToDeliveryConverter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
@@ -61,22 +60,22 @@ public class DeliveryServiceImpl implements DeliveryService {
         return deliveriesResponseDto;
     }
 
-    public OrderDto acceptedDelivery(Long idOrder, Long idCourier) {
+    public OrderDto acceptedDelivery(Long idOrder, Long idCourier, HttpServletRequest request) {
         ConfirmCourierDto confirmCourierDto =  ConfirmCourierDto
                 .builder()
                 .orderID(idOrder)
                 .courierID(idCourier)
-                .status("OK")
                 .build();
-
-        ResponseEntity<Object> restaurantResponseEntity = restaurantFeign.pickingOrderById(confirmCourierDto);
+        String authorizationHeader = request.getHeader("Authorization");
+        ResponseEntity<Object> restaurantResponseEntity = restaurantFeign.pickingOrderById(confirmCourierDto, authorizationHeader);
         OrderDto order = getOrderFromResponseEntity(restaurantResponseEntity);
         courierService.courierUpdateStatusById(order.getCourier().getId(), StatusCourier.COURIER_DELIVERS);
         return order;
     }
 
-    public OrderDto deniedDelivery(Long id) {
-        ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(StatusOrders.DELIVERY_DENIED));
+    public OrderDto deniedDelivery(Long id, HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(StatusOrders.DELIVERY_DENIED), authorizationHeader);
         OrderDto order = getOrderFromResponseEntity(responseEntity);
         messageSender.sendOrder(order);
         paymentService.refund(order);
@@ -84,16 +83,18 @@ public class DeliveryServiceImpl implements DeliveryService {
         return order;
     }
 
-    public OrderDto completeDelivery(Long id) {
-        ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(StatusOrders.DELIVERY_COMPLETE));
+    public OrderDto completeDelivery(Long id, HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(StatusOrders.DELIVERY_COMPLETE), authorizationHeader);
         OrderDto order = getOrderFromResponseEntity(responseEntity);
         messageSender.sendOrder(order);
         courierService.courierUpdateStatusById(order.getCourier().getId(), StatusCourier.COURIER_ACTIVE);
         return order;
     }
 
-    public OrderDto deliveringDelivery(Long id) {
-        ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(StatusOrders.DELIVERY_DELIVERING));
+    public OrderDto deliveringDelivery(Long id, HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(StatusOrders.DELIVERY_DELIVERING), authorizationHeader);
         OrderDto order = getOrderFromResponseEntity(responseEntity);
         messageSender.sendOrder(order);
         return order;
