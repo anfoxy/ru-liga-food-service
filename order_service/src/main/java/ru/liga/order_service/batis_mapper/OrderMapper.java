@@ -1,7 +1,7 @@
 package ru.liga.order_service.batis_mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import ru.liga.order_service.model.Order;
+import ru.liga.commons.model.Order;
 import java.util.List;
 
 @Mapper

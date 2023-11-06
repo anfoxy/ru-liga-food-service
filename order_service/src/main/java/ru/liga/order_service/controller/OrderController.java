@@ -50,7 +50,7 @@ public class OrderController {
     @GetMapping("/customer/{customer_id}")
     public ResponseEntity<Object> getAllOrderByCustomerId(@PathVariable("customer_id") @Min(0) @Parameter(description = "Идентификатор клиента") Long id) {
         return ResponseEntity
-                .ok(orderService.getAllOrderByCustomer(id));
+                .ok(orderService.getAllOrderByCustomerID(id));
     }
 
     @Operation(summary = "Получить заказы по статусу",

@@ -16,7 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.liga.commons.dto.dto_model.OrderDto;
 import ru.liga.commons.status.StatusOrders;
-import ru.liga.order_service.exception.ResourceNotFoundException;
+import ru.liga.commons.exception.ResourceNotFoundException;
 import ru.liga.order_service.service.OrderService;
 
 import static org.mockito.ArgumentMatchers.anyLong;

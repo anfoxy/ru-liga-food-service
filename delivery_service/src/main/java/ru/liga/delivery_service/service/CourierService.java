@@ -6,107 +6,29 @@ import org.springframework.stereotype.Service;
 import ru.liga.commons.dto.dto_model.CourierDto;
 import ru.liga.commons.dto.dto_model.OrderDto;
 import ru.liga.commons.status.StatusCourier;
-import ru.liga.delivery_service.exception.CreationException;
-import ru.liga.delivery_service.exception.ResourceNotFoundException;
-import ru.liga.delivery_service.mapper.CourierListMapper;
-import ru.liga.delivery_service.mapper.CourierMapper;
-import ru.liga.delivery_service.model.Courier;
-import ru.liga.delivery_service.repository.CourierRepository;
-import ru.liga.delivery_service.service.rabbit.MessageSenderCourier;
+import ru.liga.commons.exception.CreationException;
+import ru.liga.commons.exception.ResourceNotFoundException;
+import ru.liga.commons.mapper.CourierListMapper;
+import ru.liga.commons.mapper.CourierMapper;
+import ru.liga.commons.model.Courier;
+import ru.liga.commons.repositories.CourierRepository;
+import ru.liga.delivery_service.service.impl.MessageSenderCourier;
 
 import java.util.List;
 
-@Service
-@Slf4j
-@RequiredArgsConstructor
-public class CourierService {
 
-    private final CourierRepository courierRepository;
-    private final CourierMapper mapper;
-    private final CourierListMapper listMapper;
-    private final DistanceCalculator distanceCalculator;
-    private final OrderToDeliveryConverter toDeliveryConverter;
-    private final LocalityDeterminant localityDeterminant;
-    private final MessageSenderCourier messageSender;
+public interface CourierService {
 
-    public CourierDto getCourierById(Long id) {
-        return mapper.toDTO(courierRepository
-                        .findById(id)
-                        .orElseThrow(ResourceNotFoundException::new));
-    }
+    public CourierDto getCourierById(Long id);
 
-    public List<CourierDto> getCourierByStatusActive() {
-        return listMapper.toDTOList(courierRepository
-                        .findAllByStatus(StatusCourier.COURIER_ACTIVE));
-    }
+    public List<CourierDto> getCourierByStatusActive();
 
-    public CourierDto courierCreate(CourierDto courierRequest) {
-        if (courierRequest.getCoordinates() == null
-                || courierRequest.getPhone() == null) {
-            throw new CreationException("Bad request");
-        }
+    public CourierDto courierCreate(CourierDto courierRequest);
 
-        Courier courier = Courier
-                .builder()
-                .coordinates(courierRequest.getCoordinates())
-                .phone(courierRequest.getPhone())
-                .status(StatusCourier.COURIER_NOT_ACTIVE)
-                .build();
+    public CourierDto getClosestCourier(String restaurantAddress, String district);
 
-        return mapper.toDTO(courierRepository
-                        .save(courier));
-    }
+    public CourierDto courierUpdateById(Long id, CourierDto courierRequest);
 
-    public CourierDto getClosestCourier(String restaurantAddress, String district) {
-        List<CourierDto> couriers = getCourierByStatusActive();
-        log.info("CourierService: getCourierByStatusActive = " + couriers);
-        CourierDto closestCourier = null;
-        double minDistance = Double.MAX_VALUE;
-
-        for (CourierDto courier : couriers) {
-            String districtCourier = localityDeterminant.getLocation(courier.getCoordinates());
-            if (!district.equals(districtCourier)) {
-                log.info("CourierService: districtCourier = " + districtCourier + "district order" + district);
-                continue;
-            }
-            double distance = distanceCalculator.calculator(courier.getCoordinates(), restaurantAddress);
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestCourier = courier;
-            }
-        }
-
-        return closestCourier;
-    }
-
-    public CourierDto courierUpdateById(Long id, CourierDto courierRequest) {
-        Courier courierResponse = mapper.toModel(getCourierById(id));
-        mapper.updateCourierFromDto(courierRequest, courierResponse);
-        courierResponse.setId(id);
-        return mapper.toDTO(courierRepository
-                        .save(courierResponse));
-    }
-
-    public void courierUpdateStatusById(Long id, StatusCourier statusCourier) {
-        Courier courierResponse = mapper.toModel(getCourierById(id));
-        courierResponse.setStatus(statusCourier);
-        mapper.toDTO(courierRepository
-                        .save(courierResponse));
-    }
-
-    public void setCourierForDelivery(OrderDto orderDto, String location) {
-        log.info("CourierService: search for the nearest courier in area " + location);
-        CourierDto courierDto = getClosestCourier(orderDto.getRestaurant().getAddress(), location);
-
-        if (courierDto != null) {
-            log.info("CourierService: The nearest courier has been found: " + courierDto);
-            messageSender.sendMessage(toDeliveryConverter.deliveryDtoCreateFromOrder(orderDto, courierDto));
-            return;
-        }
-        log.info("CourierService: The nearest courier was not found");
-        //доделать с ожиданием
-    }
-
-
+    public void courierUpdateStatusById(Long id, StatusCourier statusCourier);
 
 }

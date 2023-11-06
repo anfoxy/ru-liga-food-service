@@ -1,6 +1,6 @@
 package ru.liga.order_service.service;
 
-import ru.liga.order_service.model.Order;
+import ru.liga.commons.model.Order;
 
 public interface PaymentService {
 

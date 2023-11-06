@@ -56,7 +56,7 @@ public class OrderItemController {
     @PutMapping("/{id}/update")
     public ResponseEntity<Object> updateOrderItemMenuById(@PathVariable("id") Long id, @RequestBody OrderItemDto orderItemDto) {
         return ResponseEntity
-                .ok(orderItemMenuService.orderItemMenuUpdate(id, orderItemDto));
+                .ok(orderItemMenuService.orderItemUpdate(id, orderItemDto));
     }
 
     @Operation(summary = "удалить пункт заказа по id")

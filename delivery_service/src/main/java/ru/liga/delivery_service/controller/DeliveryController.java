@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,7 +52,7 @@ public class DeliveryController {
     @PutMapping("/{order_id}/denied")
     public ResponseEntity<Object> deniedDeliveryById(@PathVariable("order_id") Long id) {
         return ResponseEntity
-                .ok(orderService.deniedDelivery(id,StatusOrders.DELIVERY_DENIED));
+                .ok(orderService.deniedDelivery(id));
     }
 
     @Operation(summary = "Доставка заказа")
@@ -63,7 +62,7 @@ public class DeliveryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.updateDeliveryActionById(id, StatusOrders.DELIVERY_DELIVERING));
+                .ok(orderService.deliveringDelivery(id));
     }
 
     @Operation(summary = "Доставка заказа")
@@ -73,8 +72,7 @@ public class DeliveryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.completeDelivery(id,StatusOrders.DELIVERY_COMPLETE));
+                .ok(orderService.completeDelivery(id));
     }
 
 }
-

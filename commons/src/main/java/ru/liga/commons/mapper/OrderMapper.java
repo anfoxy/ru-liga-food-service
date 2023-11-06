@@ -1,0 +1,20 @@
+package ru.liga.commons.mapper;
+
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import ru.liga.commons.dto.dto_model.OrderDto;
+import ru.liga.commons.model.Order;
+
+@Mapper(componentModel = "spring")
+public interface OrderMapper {
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateOrderFromDto(OrderDto dto, @MappingTarget Order entity);
+
+    OrderDto toDTO(Order model);
+
+    Order toModel(OrderDto dto);
+
+}

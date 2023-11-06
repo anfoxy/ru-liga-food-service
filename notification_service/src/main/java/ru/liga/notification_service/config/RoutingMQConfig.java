@@ -15,12 +15,14 @@ public class RoutingMQConfig {
         Queue restaurantQueue = new Queue("restaurantQueue", false);
         Queue customerQueue = new Queue("customerQueue", false);
         Queue courierQueue = new Queue("courierQueue", false);
+        Queue restaurantMessageQueue = new Queue("restaurantMessageQueue", false);
 
         DirectExchange directExchange = new DirectExchange("directExchange");
 
-        return new Declarables(restaurantQueue, customerQueue, courierQueue, directExchange,
+        return new Declarables(restaurantQueue, customerQueue, courierQueue, restaurantMessageQueue, directExchange,
                 BindingBuilder.bind(restaurantQueue).to(directExchange).with("restaurant.order"),
                 BindingBuilder.bind(customerQueue).to(directExchange).with("customer.order"),
+                BindingBuilder.bind(restaurantMessageQueue).to(directExchange).with("restaurant.message"),
                 BindingBuilder.bind(courierQueue).to(directExchange).with("courier.order"));
     }
 

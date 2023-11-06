@@ -3,7 +3,7 @@ package ru.liga.kitchen_service.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import ru.liga.kitchen_service.model.Order;
+import ru.liga.commons.model.Order;
 
 import java.util.List;
 

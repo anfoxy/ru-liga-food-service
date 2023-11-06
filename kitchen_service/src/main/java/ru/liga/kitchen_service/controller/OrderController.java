@@ -5,13 +5,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.liga.commons.status.StatusOrders;
+import ru.liga.commons.dto.ConfirmCourierDto;
+import ru.liga.commons.dto.dto_model.RestaurantDto;
 import ru.liga.kitchen_service.service.OrderService;
 
 @Tag(name = "Api для работы с заказами")
@@ -22,33 +22,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @Operation(summary = "Получить заказ по ID")
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getOrderById(@PathVariable("id") Long id) {
-        if (id <= 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
-        }
-        return ResponseEntity
-                .ok(orderService.getOrderById(id));
-    }
-
-    @Operation(summary = "Получить заказы ресторана по статусу")
-    @GetMapping("/{restaurant_id}/status")
-    public ResponseEntity<Object> getAllOrderByStatus(@PathVariable("restaurant_id") Long id,
-                                                      @RequestParam("status") StatusOrders status) {
-        return ResponseEntity
-                .ok(orderService.getAllOrderByStatus(status, id));
-    }
-
     @Operation(summary = "Подтвердить курьера заказа")
-    @PutMapping("/{id}/courier/{id_courier}/picking")
-    public ResponseEntity<Object> pickingOrderById(@PathVariable("id") Long id,
-                                                        @PathVariable("id_courier") Long id_courier) {
-        if (id <= 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
-        }
+    @PutMapping("/courier/confirm")
+    public ResponseEntity<Object> confirmCourier(@RequestBody ConfirmCourierDto confirmCourierDto) {
         return ResponseEntity
-                .ok(orderService.pickingOrderById(id,id_courier));
+                .ok(orderService.confirmCourier(confirmCourierDto));
     }
 
     @Operation(summary = "Завершить приготовление заказа на кухне с заданным ID")
@@ -58,7 +36,7 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.completeOrderById(id, StatusOrders.DELIVERY_PENDING));
+                .ok(orderService.completeOrderById(id));
     }
 
     @Operation(summary = "принять заказ с заданным ID")
@@ -68,7 +46,7 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_ACCEPTED));
+                .ok(orderService.acceptedOrderById(id));
     }
 
     @Operation(summary = "Установить заказ с заданным ID на процесс приготовления")
@@ -78,7 +56,7 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_PREPARING));
+                .ok(orderService.preparingOrderById(id));
     }
 
     @Operation(summary = "Отказаться от заказа с заданным ID")
@@ -88,7 +66,7 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
         }
         return ResponseEntity
-                .ok(orderService.deniedOrderById(id, StatusOrders.KITCHEN_DENIED));
+                .ok(orderService.deniedOrderById(id));
     }
 
 }

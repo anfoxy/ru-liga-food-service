@@ -1,7 +1,6 @@
 package ru.liga.order_service.service;
 
-import ru.liga.commons.dto.dto_model.OrderDto;
-import ru.liga.order_service.model.Order;
+import ru.liga.commons.model.Order;
 
 import java.time.ZonedDateTime;
 

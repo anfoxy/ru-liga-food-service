@@ -29,10 +29,10 @@ public class DeliveryDto {
     private Long courierId;
 
     @Schema(description = "Ресторан")
-    private RestaurantForDeliveryDTO restaurant;
+    private RestaurantForDeliveryDto restaurant;
 
     @Schema(description = "Клиент")
-    private CustomerForDeliveryDTO customer;
+    private CustomerForDeliveryDto customer;
 
     @Schema(description = "Оплата")
     private Double payment;

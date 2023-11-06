@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import ru.liga.order_service.model.Order;
+import ru.liga.commons.model.Order;
 import java.util.List;
 
 @Schema(description = "Список заказов")

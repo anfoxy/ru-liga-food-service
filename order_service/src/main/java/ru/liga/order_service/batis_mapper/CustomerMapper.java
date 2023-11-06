@@ -1,9 +1,7 @@
 package ru.liga.order_service.batis_mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import ru.liga.commons.status.StatusCourier;
-import ru.liga.order_service.model.Courier;
-import ru.liga.order_service.model.Customer;
+import ru.liga.commons.model.Customer;
 
 import java.util.List;
 
