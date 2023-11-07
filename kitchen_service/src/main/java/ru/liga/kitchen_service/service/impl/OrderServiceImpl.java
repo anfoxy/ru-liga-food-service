@@ -18,9 +18,11 @@ import ru.liga.commons.status.StatusOrders;
 import ru.liga.kitchen_service.feign.OrderFeign;
 import ru.liga.kitchen_service.service.OrderService;
 import ru.liga.kitchen_service.service.PaymentService;
+import ru.liga.kitchen_service.rabbit.MessageSenderCourier;
+import ru.liga.kitchen_service.rabbit.MessageSenderCustomer;
+import ru.liga.kitchen_service.rabbit.MessageSenderRestaurant;
 
 import javax.servlet.http.HttpServletRequest;
-
 
 @Service
 @Slf4j
@@ -38,27 +40,27 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto deniedOrderById(Long id, HttpServletRequest request) {
-        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_DENIED,request);
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_DENIED, request);
         paymentService.refund(order);
         return order;
     }
 
     @Override
     public OrderDto completeOrderById(Long id, HttpServletRequest request) {
-        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.DELIVERY_PENDING,request);
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.DELIVERY_PENDING, request);
         senderCourierMassageMQ.sendOrder(order);
         return order;
     }
 
     @Override
     public OrderDto acceptedOrderById(Long id, HttpServletRequest request) {
-        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_ACCEPTED,request);
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_ACCEPTED, request);
         return order;
     }
 
     @Override
     public OrderDto preparingOrderById(Long id, HttpServletRequest request) {
-        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_PREPARING,request);
+        OrderDto order = updateOrderStatusByIdAndSendMessage(id, StatusOrders.KITCHEN_PREPARING, request);
         return order;
     }
 
@@ -75,12 +77,17 @@ public class OrderServiceImpl implements OrderService {
 
         order.setCourier(new CourierDto().setId(confirmCourierDto.getCourierID()));
         order.setStatus(StatusOrders.DELIVERY_PICKING);
+
         String authorizationHeader = request.getHeader("Authorization");
-        ResponseEntity<Object> orderResponseEntity = orderFeign.updateOrderById(confirmCourierDto.getOrderID(), order, authorizationHeader);
+        ResponseEntity<Object> orderResponseEntity = orderFeign
+                .updateOrderById(confirmCourierDto.getOrderID(), order, authorizationHeader);
+
         OrderDto newOrder = getOrderFromResponseEntity(orderResponseEntity);
+
         senderCustomerMassageMQ.sendOrder(newOrder);
         senderRestaurantMassageMQ.sendMessage("Found a courier with id " + confirmCourierDto.getCourierID()
                 + " for order by id " + confirmCourierDto.getOrderID());
+
         return newOrder;
     }
 

@@ -19,7 +19,7 @@ import ru.liga.commons.status.StatusOrders;
 import ru.liga.order_service.dto.OrderCreateRequestDto;
 import ru.liga.order_service.dto.OrderCreateResponseDto;
 import ru.liga.order_service.dto.OrderItemCreateRequestDto;
-import ru.liga.order_service.service.MessageSender;
+import ru.liga.order_service.rabbit.MessageSender;
 import ru.liga.order_service.service.OrderItemService;
 import ru.liga.order_service.service.OrderService;
 import ru.liga.order_service.service.PaymentService;

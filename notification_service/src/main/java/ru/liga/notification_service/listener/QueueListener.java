@@ -46,7 +46,7 @@ public class QueueListener {
     }
 
     @RabbitListener(queues = "courierQueue")
-    public void createOrder(String message) {
+    public void courierQueue(String message) {
         try {
             DeliveryDto messageModel = readValueDeliveryDto(message);
             log.info("Received message for courier by id " + messageModel.getCourierId());

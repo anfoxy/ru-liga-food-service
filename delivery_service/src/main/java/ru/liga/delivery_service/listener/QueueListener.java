@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import ru.liga.commons.dto.dto_model.CourierDto;
 import ru.liga.commons.dto.dto_model.OrderDto;
 import ru.liga.delivery_service.service.CourierService;
-import ru.liga.delivery_service.service.impl.MessageSenderCourier;
-import ru.liga.delivery_service.service.impl.MessageSenderRestaurant;
-import ru.liga.delivery_service.service.impl.OrderToDeliveryConverter;
+import ru.liga.delivery_service.rabbit.MessageSenderCourier;
+import ru.liga.delivery_service.rabbit.MessageSenderRestaurant;
+import ru.liga.delivery_service.service.OrderToDeliveryConverter;
 
 @Service
 @Slf4j
@@ -20,12 +20,12 @@ import ru.liga.delivery_service.service.impl.OrderToDeliveryConverter;
 public class QueueListener {
 
     private final CourierService courierService;
-    private final MessageSenderCourier messageSender;
+    private final MessageSenderCourier messageSenderCourier;
     private final OrderToDeliveryConverter toDeliveryConverter;
     private final MessageSenderRestaurant senderRestaurantMassageMQ;
 
     @RabbitListener(queues = "queueNizhegorodsky")
-    public void processQueueNizhegorodsky(String message) {
+    public void queueNizhegorodsky(String message) {
         try {
             OrderDto messageModel = readValue(message);
             log.info("Received from queueNizhegorodsky : " + messageModel.getId());
@@ -37,7 +37,7 @@ public class QueueListener {
     }
 
     @RabbitListener(queues = "queuePrioksky")
-    public void processQueuePrioksky(String message) {
+    public void queuePrioksky(String message) {
         try {
             OrderDto messageModel = readValue(message);
             log.info("Received from queuePrioksky : " + messageModel.getId());
@@ -49,7 +49,7 @@ public class QueueListener {
     }
 
     @RabbitListener(queues = "queueSovetsky")
-    public void processQueueSovetsky(String message) {
+    public void queueSovetsky(String message) {
         try {
             OrderDto messageModel = readValue(message);
             log.info("Received from queueSovetsky : " + messageModel.getId());
@@ -73,7 +73,8 @@ public class QueueListener {
 
         if (courierDto != null) {
             log.info("CourierService: The nearest courier has been found: " + courierDto);
-            messageSender.sendMessage(toDeliveryConverter.deliveryDtoCreateFromOrder(orderDto, courierDto));
+            messageSenderCourier.sendMessage(toDeliveryConverter.deliveryDtoCreateFromOrder(orderDto, courierDto));
+
         } else {
             senderRestaurantMassageMQ.sendMessage("At the request of the restorer with the ID 1," +
                     " no couriers were found available");

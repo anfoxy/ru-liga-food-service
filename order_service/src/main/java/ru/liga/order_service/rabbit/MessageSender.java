@@ -1,21 +1,22 @@
-package ru.liga.delivery_service.service.impl;
+package ru.liga.order_service.rabbit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.liga.commons.dto.dto_model.OrderDto;
+import ru.liga.order_service.service.impl.RabbitMQProducerServiceImpl;
 
 @Component
 @RequiredArgsConstructor
-public class MessageSenderCustomer {
+public class MessageSender {
 
     private final RabbitMQProducerServiceImpl rabbitMQProducerService;
     private final ObjectMapper objectMapper;
 
     public void sendOrder(OrderDto orderDto) {
         String messageModel = tryToSerialyzeMessageAsString(orderDto);
-        rabbitMQProducerService.sendMessage(messageModel, "customer.order");
+        rabbitMQProducerService.sendMessage(messageModel, "restaurant.order");
     }
 
     private String tryToSerialyzeMessageAsString(OrderDto messageModel) {

@@ -9,16 +9,16 @@ import java.util.List;
 public interface OrderItemService {
 
 
-     OrderItemDto getOrderItemById(Long id);
+    OrderItemDto getOrderItemById(Long id);
 
-     List<OrderItemDto> getAllOrderItemByOrderId(Long id);
+    List<OrderItemDto> getAllOrderItemByOrderId(Long id);
 
-     OrderItemDto createOrderItem(OrderItemCreateRequestDto orderItemDto);
+    OrderItemDto createOrderItem(OrderItemCreateRequestDto orderItemDto);
 
-     void createListOrderItem(List<OrderItem> orderItemList);
+    void createListOrderItem(List<OrderItem> orderItemList);
 
-     void deleteOrderItemById(Long id);
+    void deleteOrderItemById(Long id);
 
-     OrderItemDto orderItemUpdate(Long id, OrderItemDto orderItemRequest);
+    OrderItemDto orderItemUpdate(Long id, OrderItemDto orderItemRequest);
 
 }

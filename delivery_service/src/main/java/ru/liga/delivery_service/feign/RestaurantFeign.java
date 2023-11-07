@@ -13,7 +13,7 @@ public interface RestaurantFeign {
 
     @PutMapping("/kitchen-service/order/courier/confirm")
     @Headers("Authorization: {token}")
-    ResponseEntity<Object> pickingOrderById(@RequestBody ConfirmCourierDto confirmCourierDto,
-                                            @RequestHeader("Authorization") String token);
+    ResponseEntity<Object> confirmCourier(@RequestBody ConfirmCourierDto confirmCourierDto,
+                                          @RequestHeader("Authorization") String token);
 
 }

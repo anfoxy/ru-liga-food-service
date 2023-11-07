@@ -13,7 +13,7 @@ import ru.liga.commons.repositories.CourierRepository;
 import ru.liga.commons.status.StatusCourier;
 import ru.liga.commons.util.DistanceCalculator;
 import ru.liga.delivery_service.service.CourierService;
-import ru.liga.delivery_service.service.LocalityDeterminant;
+import ru.liga.commons.util.LocalityDeterminant;
 
 import java.util.List;
 
@@ -30,16 +30,16 @@ public class CourierServiceImpl implements CourierService {
 
     public CourierDto getCourierById(Long id) {
         return mapper.toDTO(courierRepository
-                        .findById(id)
-                        .orElseThrow(ResourceNotFoundException::new));
+                .findById(id)
+                .orElseThrow(ResourceNotFoundException::new));
     }
 
     public List<CourierDto> getCourierByStatusActive() {
         return listMapper.toDTOList(courierRepository
-                        .findAllByStatus(StatusCourier.COURIER_ACTIVE));
+                .findAllByStatus(StatusCourier.COURIER_ACTIVE));
     }
 
-    public CourierDto courierCreate(CourierDto courierRequest) {
+    public CourierDto createCourier(CourierDto courierRequest) {
         if (courierRequest.getCoordinates() == null
                 || courierRequest.getPhone() == null) {
             throw new CreationException("Bad request");
@@ -53,7 +53,7 @@ public class CourierServiceImpl implements CourierService {
                 .build();
 
         return mapper.toDTO(courierRepository
-                        .save(courier));
+                .save(courier));
     }
 
     public CourierDto getClosestCourier(String restaurantAddress, String district) {
@@ -78,19 +78,19 @@ public class CourierServiceImpl implements CourierService {
         return closestCourier;
     }
 
-    public CourierDto courierUpdateById(Long id, CourierDto courierRequest) {
+    public CourierDto updateCourierById(Long id, CourierDto courierRequest) {
         Courier courierResponse = mapper.toModel(getCourierById(id));
         mapper.updateCourierFromDto(courierRequest, courierResponse);
         courierResponse.setId(id);
         return mapper.toDTO(courierRepository
-                        .save(courierResponse));
+                .save(courierResponse));
     }
 
-    public void courierUpdateStatusById(Long id, StatusCourier statusCourier) {
+    public void updateCourierStatusById(Long id, StatusCourier statusCourier) {
         Courier courierResponse = mapper.toModel(getCourierById(id));
         courierResponse.setStatus(statusCourier);
         mapper.toDTO(courierRepository
-                        .save(courierResponse));
+                .save(courierResponse));
     }
 
 }

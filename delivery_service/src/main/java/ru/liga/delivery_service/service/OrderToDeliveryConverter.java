@@ -1,4 +1,4 @@
-package ru.liga.delivery_service.service.impl;
+package ru.liga.delivery_service.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,6 @@ import ru.liga.commons.dto.RestaurantForDeliveryDto;
 import ru.liga.commons.dto.dto_model.CourierDto;
 import ru.liga.commons.dto.dto_model.OrderDto;
 import ru.liga.commons.util.DistanceCalculator;
-import ru.liga.delivery_service.service.DeliveryCostCalculator;
 
 import java.util.ArrayList;
 import java.util.List;

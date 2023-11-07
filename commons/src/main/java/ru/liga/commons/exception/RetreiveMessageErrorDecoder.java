@@ -5,19 +5,20 @@ import feign.Response;
 import feign.RetryableException;
 import feign.codec.ErrorDecoder;
 
-public class RetreiveMessageErrorDecoder implements ErrorDecoder {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-    private final ErrorDecoder defaultErrorDecoder = new Default();
+public class RetreiveMessageErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String methodKey, Response response) {
         FeignException exception = FeignException.errorStatus(methodKey, response);
-
+        String message = message(exception.getMessage());
         switch (response.status()) {
             case 400:
-                return new RequestException();
+                return new RequestException(message == null ? "Bad request" : message);
             case 404:
-                return new ResourceNotFoundException();
+                return new ResourceNotFoundException(message == null ? "Not Found" : message);
         }
 
         return new RetryableException(
@@ -29,4 +30,16 @@ public class RetreiveMessageErrorDecoder implements ErrorDecoder {
                 response.request());
     }
 
+    private String message(String input){
+        String regex = "\"message\":\"(.*?)\"";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+
+        if (matcher.find()) {
+            String messageText = matcher.group(1);
+            return messageText;
+        }
+        return null;
+    }
 }

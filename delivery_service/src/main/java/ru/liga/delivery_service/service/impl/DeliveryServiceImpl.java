@@ -21,7 +21,9 @@ import ru.liga.delivery_service.feign.OrderFeign;
 import ru.liga.delivery_service.feign.RestaurantFeign;
 import ru.liga.delivery_service.service.CourierService;
 import ru.liga.delivery_service.service.DeliveryService;
+import ru.liga.delivery_service.service.OrderToDeliveryConverter;
 import ru.liga.delivery_service.service.PaymentService;
+import ru.liga.delivery_service.rabbit.MessageSenderCustomer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -61,15 +63,15 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     public OrderDto acceptedDelivery(Long idOrder, Long idCourier, HttpServletRequest request) {
-        ConfirmCourierDto confirmCourierDto =  ConfirmCourierDto
+        ConfirmCourierDto confirmCourierDto = ConfirmCourierDto
                 .builder()
                 .orderID(idOrder)
                 .courierID(idCourier)
                 .build();
         String authorizationHeader = request.getHeader("Authorization");
-        ResponseEntity<Object> restaurantResponseEntity = restaurantFeign.pickingOrderById(confirmCourierDto, authorizationHeader);
+        ResponseEntity<Object> restaurantResponseEntity = restaurantFeign.confirmCourier(confirmCourierDto, authorizationHeader);
         OrderDto order = getOrderFromResponseEntity(restaurantResponseEntity);
-        courierService.courierUpdateStatusById(order.getCourier().getId(), StatusCourier.COURIER_DELIVERS);
+        courierService.updateCourierStatusById(order.getCourier().getId(), StatusCourier.COURIER_DELIVERS);
         return order;
     }
 
@@ -79,7 +81,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         OrderDto order = getOrderFromResponseEntity(responseEntity);
         messageSender.sendOrder(order);
         paymentService.refund(order);
-        courierService.courierUpdateStatusById(order.getCourier().getId(), StatusCourier.COURIER_ACTIVE);
+        courierService.updateCourierStatusById(order.getCourier().getId(), StatusCourier.COURIER_ACTIVE);
         return order;
     }
 
@@ -88,7 +90,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         ResponseEntity<Object> responseEntity = orderFeign.updateOrderStatusById(id, String.valueOf(StatusOrders.DELIVERY_COMPLETE), authorizationHeader);
         OrderDto order = getOrderFromResponseEntity(responseEntity);
         messageSender.sendOrder(order);
-        courierService.courierUpdateStatusById(order.getCourier().getId(), StatusCourier.COURIER_ACTIVE);
+        courierService.updateCourierStatusById(order.getCourier().getId(), StatusCourier.COURIER_ACTIVE);
         return order;
     }
 

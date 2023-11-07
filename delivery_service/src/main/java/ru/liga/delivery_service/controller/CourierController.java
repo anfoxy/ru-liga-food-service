@@ -37,14 +37,14 @@ public class CourierController {
     @PostMapping("/create")
     public ResponseEntity<Object> createCourier(@RequestBody CourierDto courier) {
         return ResponseEntity
-                .ok(courierService.courierCreate(courier));
+                .ok(courierService.createCourier(courier));
     }
 
     @Operation(summary = "Обновить данные курьера по ID")
     @PutMapping("/{id}/update")
     public ResponseEntity<Object> updateCourierById(@PathVariable("id") Long id, @RequestBody CourierDto courier) {
         return ResponseEntity
-                .ok(courierService.courierUpdateById(id, courier));
+                .ok(courierService.updateCourierById(id, courier));
     }
 
 }

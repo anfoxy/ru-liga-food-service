@@ -68,7 +68,7 @@ public class DeliveryController {
                 .ok(orderService.deliveringDelivery(id, request));
     }
 
-    @Operation(summary = "Доставка заказа")
+    @Operation(summary = "Завершить доставку заказа")
     @PutMapping("/{order_id}/complete")
     public ResponseEntity<Object> completeDeliveryById(@PathVariable("order_id") Long id, HttpServletRequest request) {
         if (id <= 0) {

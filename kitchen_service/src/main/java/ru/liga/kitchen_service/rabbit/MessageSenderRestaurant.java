@@ -1,9 +1,8 @@
-package ru.liga.delivery_service.service.impl;
-
+package ru.liga.kitchen_service.rabbit;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
+import ru.liga.kitchen_service.service.impl.RabbitMQProducerServiceImpl;
 
 @Component
 @RequiredArgsConstructor

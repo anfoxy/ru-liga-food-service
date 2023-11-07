@@ -19,7 +19,7 @@ public class OpenApiConfig {
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
                 .info(new Info().title("My REST API")
                         .description("Сервис работы с заказами.")
-                        .version("1.0").contact(new Contact().name("Kazhaeva").email( "www.test.com").url("test@gmail.com"))
+                        .version("1.0").contact(new Contact().name("Kazhaeva").email("www.test.com").url("test@gmail.com"))
                         .license(new License().name("License of API")
                                 .url("API license URL")));
     }

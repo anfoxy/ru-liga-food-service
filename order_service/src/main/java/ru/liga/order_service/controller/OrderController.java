@@ -22,7 +22,7 @@ import ru.liga.order_service.service.OrderService;
 
 import javax.validation.constraints.Min;
 
-@Tag(name = "Api для работы с заказами",description = "В данном контроллере описаны методы для работы с заказами клиента")
+@Tag(name = "Api для работы с заказами", description = "В данном контроллере описаны методы для работы с заказами клиента")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/order-service/order")

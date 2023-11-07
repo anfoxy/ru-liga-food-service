@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 
 /**
- * Класс, который помогает высчитывать примерное время доставки
+ * Помогает высчитывать примерное время доставки
  */
 @Slf4j
 @Service

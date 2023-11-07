@@ -1,10 +1,12 @@
-package ru.liga.delivery_service.service.impl;
+package ru.liga.commons.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.commons.exception.ServerException;
-import ru.liga.delivery_service.service.LocalityDeterminant;
 
+/**
+ * Класс, который помогает определять район доставки по координатам (тестовый вариант)
+ */
 @Service
 @Slf4j
 public class LocalityDeterminantImpl implements LocalityDeterminant {
