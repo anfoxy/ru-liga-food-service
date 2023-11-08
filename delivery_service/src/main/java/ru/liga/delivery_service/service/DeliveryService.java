@@ -1,24 +1,25 @@
 package ru.liga.delivery_service.service;
 
+import ru.liga.commons.dto.DeliveryDto;
 import ru.liga.commons.dto.dto_model.OrderDto;
 import ru.liga.commons.status.StatusOrders;
-import ru.liga.delivery_service.dto.DeliveriesResponseDto;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.UUID;
 
 
 public interface DeliveryService {
 
-    OrderDto getDeliveryById(Long id);
+    OrderDto getDeliveryById(UUID id);
 
-    DeliveriesResponseDto getDeliveriesByStatus(Long id, StatusOrders orderAction);
+    List<DeliveryDto> getActiveDeliveries(UUID idCourier);
 
-    OrderDto acceptedDelivery(Long idOrder, Long idCourier, HttpServletRequest request);
+    OrderDto acceptedDelivery(UUID idOrder, UUID idCourier, HttpServletRequest request);
 
-    OrderDto deniedDelivery(Long id, HttpServletRequest request);
+    OrderDto deniedDelivery(UUID id, HttpServletRequest request);
 
-    OrderDto completeDelivery(Long id, HttpServletRequest request);
+    OrderDto completeDelivery(UUID id, HttpServletRequest request);
 
-    OrderDto deliveringDelivery(Long id, HttpServletRequest request);
+    OrderDto deliveringDelivery(UUID id, HttpServletRequest request);
 
 }

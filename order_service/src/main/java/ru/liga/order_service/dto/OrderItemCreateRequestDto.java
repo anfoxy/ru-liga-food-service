@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.UUID;
+
 @Schema(description = "Создание заказа")
 @Data
 @Accessors(chain = true)
@@ -13,9 +15,9 @@ public class OrderItemCreateRequestDto {
     private Integer quantity;
 
     @Schema(description = "пункт меню")
-    private Long restaurantMenuItem;
+    private UUID restaurantMenuItem;
 
     @Schema(description = "заказ")
-    private Long order;
+    private UUID order;
 
 }

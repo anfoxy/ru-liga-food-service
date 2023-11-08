@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.liga.commons.dto.dto_model.OrderDto;
+import ru.liga.commons.dto.NotificationDto;
 import ru.liga.order_service.service.impl.RabbitMQProducerServiceImpl;
 
 @Component
@@ -14,12 +14,12 @@ public class MessageSender {
     private final RabbitMQProducerServiceImpl rabbitMQProducerService;
     private final ObjectMapper objectMapper;
 
-    public void sendOrder(OrderDto orderDto) {
-        String messageModel = tryToSerialyzeMessageAsString(orderDto);
-        rabbitMQProducerService.sendMessage(messageModel, "restaurant.order");
+    public void sendMessage(NotificationDto notificationDto) {
+        String messageModel = tryToSerialyzeMessageAsString(notificationDto);
+        rabbitMQProducerService.sendMessage(messageModel, "notification.message");
     }
 
-    private String tryToSerialyzeMessageAsString(OrderDto messageModel) {
+    private String tryToSerialyzeMessageAsString(NotificationDto messageModel) {
         String carInfoInLine = null;
         try {
             carInfoInLine = objectMapper.writeValueAsString(messageModel);

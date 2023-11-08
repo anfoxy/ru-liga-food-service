@@ -5,18 +5,19 @@ import ru.liga.commons.status.StatusOrders;
 import ru.liga.commons.model.Order;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, UUID> {
 
-    List<Order> findAllByRestaurant_Id(Long id);
+    List<Order> findAllByRestaurant_Id(UUID id);
 
-    List<Order> findAllByCustomer_Id(Long id);
+    List<Order> findAllByCustomer_Id(UUID id);
 
-    List<Order> findAllByStatusAndRestaurant_Id(StatusOrders status, Long id);
+    List<Order> findAllByStatusAndRestaurant_Id(StatusOrders status, UUID id);
 
     List<Order> findAllByStatus(StatusOrders status);
 
-    List<Order> findAllByStatusAndCourier_Id(StatusOrders statusOrders, Long id);
+    List<Order> findAllByStatusAndCourier_Id(StatusOrders statusOrders, UUID id);
 
 
 }

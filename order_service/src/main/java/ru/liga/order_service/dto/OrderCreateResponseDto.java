@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Schema(description = "Ответ на создание заказа")
 @Data
@@ -12,7 +13,7 @@ import java.time.ZonedDateTime;
 public class OrderCreateResponseDto {
 
     @Schema(description = "ID заказа")
-    private Long id;
+    private UUID id;
 
     @Schema(description = "Секретный url-адрес платежа")
     private String secretPaymentUrl;

@@ -3,15 +3,22 @@ package ru.liga.commons.status;
 public enum StatusOrders {
     CUSTOMER_CREATED,
     CUSTOMER_PAID,
-    CUSTOMER_CANCELLED,
     KITCHEN_ACCEPTED,
     KITCHEN_PREPARING,
-    KITCHEN_DENIED,
-    KITCHEN_REFUNDED,
     DELIVERY_PENDING,
     DELIVERY_PICKING,
-    DELIVERY_DENIED,
-    DELIVERY_REFUNDED,
     DELIVERY_DELIVERING,
-    DELIVERY_COMPLETE
+    DELIVERY_COMPLETE,
+    CUSTOMER_CANCELLED,
+    KITCHEN_DENIED,
+    KITCHEN_REFUNDED,
+    DELIVERY_DENIED,
+    DELIVERY_REFUNDED;
+
+    private static final StatusOrders[] vals = values();
+
+    public StatusOrders next() {
+        return vals[(this.ordinal() + 1) % vals.length];
+    }
+
 }

@@ -1,4 +1,4 @@
-package ru.liga.kitchen_service.config;
+package ru.liga.order_service.config;
 
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Declarables;
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Configuration;
 public class RoutingMQConfig {
 
     @Bean
-    public Declarables myQueue2() {
-        Queue restaurantQueue = new Queue("restaurantQueue", false);
+    public Declarables myQueue() {
+        Queue customerQueue = new Queue("customerQueue", false);
         DirectExchange directExchange = new DirectExchange("directExchange");
-        return new Declarables(restaurantQueue, directExchange,
-                BindingBuilder.bind(restaurantQueue).to(directExchange).with("restaurant.message"));
+        return new Declarables(customerQueue, directExchange,
+                BindingBuilder.bind(customerQueue).to(directExchange).with("customer.message"));
     }
 
 }

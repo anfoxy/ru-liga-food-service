@@ -24,6 +24,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "restaurant_menu_item")
@@ -36,10 +37,9 @@ import java.io.Serializable;
 public class RestaurantMenuItem implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_menu_item_seq_gen")
-    @SequenceGenerator(name = "restaurant_menu_item_seq_gen", sequenceName = "restaurant_menu_item_seq", allocationSize = 1)
+    @GeneratedValue
     @Column(name = "restaurant_menu_item_id")
-    private Long id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

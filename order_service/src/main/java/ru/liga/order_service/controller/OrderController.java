@@ -21,6 +21,7 @@ import ru.liga.order_service.dto.OrderCreateRequestDto;
 import ru.liga.order_service.service.OrderService;
 
 import javax.validation.constraints.Min;
+import java.util.UUID;
 
 @Tag(name = "Api для работы с заказами", description = "В данном контроллере описаны методы для работы с заказами клиента")
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "Данные не найдены")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOrderById(@PathVariable("id") @Min(0) @Parameter(description = "Идентификатор заказа") Long id) {
+    public ResponseEntity<Object> getOrderById(@PathVariable("id") @Parameter(description = "Идентификатор заказа") UUID id) {
         return ResponseEntity
                 .ok(orderService.getOrderById(id));
     }
@@ -48,32 +49,9 @@ public class OrderController {
             @ApiResponse(responseCode = "200", description = "Данные получены")
     })
     @GetMapping("/customer/{customer_id}")
-    public ResponseEntity<Object> getAllOrderByCustomerId(@PathVariable("customer_id") @Min(0) @Parameter(description = "Идентификатор клиента") Long id) {
+    public ResponseEntity<Object> getAllOrderByCustomerId(@PathVariable("customer_id") @Min(0) @Parameter(description = "Идентификатор клиента") UUID id) {
         return ResponseEntity
                 .ok(orderService.getAllOrderByCustomerID(id));
-    }
-
-    @Operation(summary = "Получить заказы по статусу",
-            description = "Получить все заказы по заданному статусу")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Данные получены")
-    })
-    @GetMapping("/status")
-    public ResponseEntity<Object> getAllOrderByStatus(@RequestParam("status") @Parameter(description = "статус заказа") StatusOrders status) {
-        return ResponseEntity
-                .ok(orderService.getAllOrderByStatus(status));
-    }
-
-    @Operation(summary = "Получить заказ по id ресторана",
-            description = "Получить заказ по заданному ID ресторана")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Данные получены"),
-            @ApiResponse(responseCode = "404", description = "Данные не найдены")
-    })
-    @GetMapping("/restaurant/{restaurant_id}")
-    public ResponseEntity<Object> getOrderByRestaurantID(@PathVariable("restaurant_id") @Min(0) @Parameter(description = "Идентификатор ресторана") Long restaurant_id) {
-        return ResponseEntity
-                .ok(orderService.getOrderByRestaurantID(restaurant_id));
     }
 
     @Operation(summary = "Обновить данные заказа",
@@ -83,9 +61,10 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "Данные не найдены")
     })
     @PutMapping("/{id}/update")
-    public ResponseEntity<Object> updateOrderById(@PathVariable("id") @Min(0) @Parameter(description = "Идентификатор заказа") Long id, @RequestBody @Parameter(description = "заказ") OrderDto order) {
+    public ResponseEntity<Object> orderUpdateCourierAndStatus(@PathVariable("id") @Min(0) @Parameter(description = "Идентификатор заказа") UUID id,
+                                                              @RequestBody @Parameter(description = "заказ") OrderDto order) {
         return ResponseEntity
-                .ok(orderService.orderUpdate(id, order));
+                .ok(orderService.orderUpdateCourierAndStatus(id, order));
     }
 
     @Operation(summary = "Обновить статус заказа",
@@ -95,7 +74,8 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "Данные не найдены")
     })
     @PutMapping("/{id}/update/status")
-    public ResponseEntity<Object> updateOrderStatusById(@PathVariable("id") @Min(0) @Parameter(description = "Идентификатор заказа") Long id, @RequestParam("status") @Parameter(description = "статус") StatusOrders status) {
+    public ResponseEntity<Object> updateOrderStatusById(@PathVariable("id") @Min(0) @Parameter(description = "Идентификатор заказа") UUID id,
+                                                        @RequestParam("status") @Parameter(description = "статус") StatusOrders status) {
         return ResponseEntity
                 .ok(orderService.updateOrderStatusById(id, status));
     }

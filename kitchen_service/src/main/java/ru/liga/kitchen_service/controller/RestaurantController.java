@@ -16,6 +16,8 @@ import ru.liga.commons.dto.dto_model.RestaurantDto;
 import ru.liga.commons.status.StatusRestaurant;
 import ru.liga.kitchen_service.service.RestaurantService;
 
+import java.util.UUID;
+
 @Tag(name = "Api для работы с рестораном")
 @RequiredArgsConstructor
 @RestController
@@ -24,48 +26,18 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
 
-    @Operation(summary = "Получить рестораном по ID")
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getRestaurantById(@PathVariable("id") Long id) {
-        if (id <= 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
-        }
-        return ResponseEntity
-                .ok(restaurantService.getRestaurantById(id));
-    }
-
-    @Operation(summary = "открыть ресторан с заданным ID")
-    @PutMapping("/{id}/open")
-    public ResponseEntity<Object> updateRestaurantStatusOpen(@PathVariable("id") Long id) {
-        if (id <= 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
-        }
+    @Operation(summary = "Открыть ресторан с заданным ID")
+    @PostMapping("/{id}/open")
+    public ResponseEntity<Object> updateRestaurantStatusOpen(@PathVariable("id") UUID id) {
         return ResponseEntity
                 .ok(restaurantService.updateRestaurantStatus(id, StatusRestaurant.RESTAURANT_ACTIVE));
     }
 
-    @Operation(summary = "закрыть ресторан с заданным ID")
-    @PutMapping("/{id}/close")
-    public ResponseEntity<Object> updateRestaurantStatusClose(@PathVariable("id") Long id) {
-        if (id <= 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad Request");
-        }
+    @Operation(summary = "Закрыть ресторан с заданным ID")
+    @PostMapping("/{id}/close")
+    public ResponseEntity<Object> updateRestaurantStatusClose(@PathVariable("id") UUID id) {
         return ResponseEntity
                 .ok(restaurantService.updateRestaurantStatus(id, StatusRestaurant.RESTAURANT_NOT_ACTIVE));
-    }
-
-    @Operation(summary = "Добавить ресторан")
-    @PostMapping("/create")
-    public ResponseEntity<Object> createRestaurant(@RequestBody RestaurantDto restaurantMenu) {
-        return ResponseEntity
-                .ok(restaurantService.createRestaurant(restaurantMenu));
-    }
-
-    @Operation(summary = "Обновить данные ресторана по ID")
-    @PutMapping("/{id}/update")
-    public ResponseEntity<Object> updateRestaurantById(@PathVariable("id") Long id, @RequestBody RestaurantDto restaurant) {
-        return ResponseEntity
-                .ok(restaurantService.restaurantUpdate(id, restaurant));
     }
 
 }

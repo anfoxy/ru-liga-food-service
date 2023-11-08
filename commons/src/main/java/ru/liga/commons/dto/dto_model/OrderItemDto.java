@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.UUID;
+
 @Schema(description = "Пункт заказа")
 @Data
 @Setter
@@ -20,7 +22,7 @@ import lombok.experimental.Accessors;
 public class OrderItemDto {
 
     @Schema(description = "id")
-    private Long id;
+    private UUID id;
 
     @Schema(description = "Цена")
     private Double price;

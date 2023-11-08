@@ -4,20 +4,17 @@ import ru.liga.commons.dto.dto_model.CourierDto;
 import ru.liga.commons.status.StatusCourier;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public interface CourierService {
 
-    CourierDto getCourierById(Long id);
+    CourierDto getCourierById(UUID id);
 
     List<CourierDto> getCourierByStatusActive();
 
-    CourierDto createCourier(CourierDto courierRequest);
-
     CourierDto getClosestCourier(String restaurantAddress, String district);
 
-    CourierDto updateCourierById(Long id, CourierDto courierRequest);
-
-    void updateCourierStatusById(Long id, StatusCourier statusCourier);
+    void updateCourierStatusById(UUID id, StatusCourier statusCourier);
 
 }

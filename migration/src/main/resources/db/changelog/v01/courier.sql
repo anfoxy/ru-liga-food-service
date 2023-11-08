@@ -1,5 +1,3 @@
-create sequence if not exists courier_seq;
-
 create type courier_status AS ENUM
     (
     'COURIER_ACTIVE',
@@ -9,7 +7,7 @@ create type courier_status AS ENUM
 
 create table if not exists courier
 (
-    courier_id bigint not null default nextval ('courier_seq'),
+    courier_id uuid not null default gen_random_uuid(),
     phone varchar(11) not null,
     coordinates varchar(255) not null,
     status courier_status not null,

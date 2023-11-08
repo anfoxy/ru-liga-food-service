@@ -10,6 +10,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.liga.commons.status.StatusRestaurant;
 
+import java.util.UUID;
+
 @Schema(description = "Ресторан")
 @Data
 @Setter
@@ -21,7 +23,7 @@ import ru.liga.commons.status.StatusRestaurant;
 public class RestaurantDto {
 
     @Schema(description = "ID ресторана")
-    private Long id;
+    private UUID id;
 
     @Schema(description = "Адрес")
     private String address;

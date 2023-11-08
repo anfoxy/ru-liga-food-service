@@ -41,10 +41,10 @@ public class OrderToDeliveryConverter {
                 .build();
     }
 
-    public List<DeliveryDto> deliveryDtoListCreateFromOrder(List<OrderDto> orderList) {
+    public List<DeliveryDto> deliveryDtoListCreateFromOrder(List<OrderDto> orderList, CourierDto courierDto) {
         List<DeliveryDto> deliveryDtoList = new ArrayList<>();
         for (OrderDto order : orderList) {
-            deliveryDtoList.add(deliveryDtoCreateFromOrder(order, order.getCourier()));
+            deliveryDtoList.add(deliveryDtoCreateFromOrder(order, courierDto));
         }
         return deliveryDtoList;
     }

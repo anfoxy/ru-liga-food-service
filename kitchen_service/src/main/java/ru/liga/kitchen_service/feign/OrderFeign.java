@@ -10,19 +10,21 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.liga.commons.dto.dto_model.OrderDto;
 
+import java.util.UUID;
+
 @FeignClient(name = "${order.feign.name}", url = "${order.url}")
 public interface OrderFeign {
 
     @PutMapping("/order-service/order/{id}/update/status")
     @Headers("Authorization: {token}")
-    ResponseEntity<Object> updateOrderStatusById(@PathVariable("id") Long id,
+    ResponseEntity<Object> updateOrderStatusById(@PathVariable("id") UUID id,
                                                  @RequestParam("status") String status,
                                                  @RequestHeader("Authorization") String token);
 
     @PutMapping("/order-service/order/{id}/update")
     @Headers("Authorization: {token}")
-    ResponseEntity<Object> updateOrderById(@PathVariable("id") Long id,
-                                           @RequestBody OrderDto order,
-                                           @RequestHeader("Authorization") String token);
+    ResponseEntity<Object> orderUpdateCourierAndStatus(@PathVariable("id") UUID id,
+                                                       @RequestBody OrderDto order,
+                                                       @RequestHeader("Authorization") String token);
 
 }

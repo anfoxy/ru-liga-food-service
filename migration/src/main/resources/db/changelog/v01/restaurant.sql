@@ -1,5 +1,3 @@
-create sequence if not exists restaurant_seq;
-
 create type restaurant_status AS ENUM
     (
     'RESTAURANT_ACTIVE',
@@ -8,7 +6,7 @@ create type restaurant_status AS ENUM
 
 create table if not exists restaurant
 (
-    restaurant_id bigint not null default nextval ('restaurant_seq'),
+    restaurant_id uuid not null default gen_random_uuid(),
     address varchar(255) not null,
     status restaurant_status not null,
     restaurant_name varchar(255) not null,

@@ -17,6 +17,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "customer")
@@ -28,10 +29,9 @@ import java.util.List;
 public class Customer implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq_gen")
-    @SequenceGenerator(name = "customer_seq_gen", sequenceName = "customer_seq", allocationSize = 1)
+    @GeneratedValue
     @Column(name = "customer_id")
-    private Long id;
+    private UUID id;
 
     private String phone;
 

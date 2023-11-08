@@ -9,9 +9,8 @@ import ru.liga.delivery_service.service.PaymentService;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-    public boolean refund(OrderDto order) {
-        log.info("refund of funds  " + order);
-        return true;
+    public void refund(OrderDto order) {
+        log.info("Refund of funds  " + order);
     }
 
 }

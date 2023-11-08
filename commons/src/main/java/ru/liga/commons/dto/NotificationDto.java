@@ -21,12 +21,12 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConfirmCourierDto {
+public class NotificationDto {
 
-    @Schema(description = "Id курьера")
-    private UUID courierID;
+    @Schema(description = "Ключ")
+    private String routingKey;
 
-    @Schema(description = "Id заказа")
-    private UUID orderID;
+    @Schema(description = "Сообщение")
+    private String message;
 
 }

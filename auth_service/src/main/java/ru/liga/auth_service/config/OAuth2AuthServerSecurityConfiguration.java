@@ -49,7 +49,9 @@ public class OAuth2AuthServerSecurityConfiguration {
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.exceptionHandling(exceptions -> exceptions
+        http
+                .csrf().disable()
+                .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(
                         new LoginUrlAuthenticationEntryPoint("/login"))
         );
@@ -63,6 +65,7 @@ public class OAuth2AuthServerSecurityConfiguration {
         http
                 .csrf().disable().authorizeHttpRequests()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/setRole").permitAll()
                 .and()
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());

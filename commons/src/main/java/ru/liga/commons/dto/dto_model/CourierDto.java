@@ -10,6 +10,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.liga.commons.status.StatusCourier;
 
+import java.util.UUID;
+
 @Schema(description = "Курьер")
 @Data
 @Setter
@@ -21,7 +23,7 @@ import ru.liga.commons.status.StatusCourier;
 public class CourierDto {
 
     @Schema(description = "ID курьера")
-    private Long id;
+    private UUID id;
 
     @Schema(description = "телефон")
     private String phone;

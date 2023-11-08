@@ -1,3 +1,4 @@
+
 package ru.liga.order_service.config;
 
 import org.springframework.context.annotation.Bean;
@@ -24,3 +25,4 @@ public class OAuth2ResourceServerSecurityConfiguration {
         return http.build();
     }
 }
+

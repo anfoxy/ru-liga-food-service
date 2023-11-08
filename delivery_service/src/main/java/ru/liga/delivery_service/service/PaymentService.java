@@ -4,6 +4,6 @@ import ru.liga.commons.dto.dto_model.OrderDto;
 
 public interface PaymentService {
 
-    boolean refund(OrderDto order);
+    void refund(OrderDto order);
 
 }

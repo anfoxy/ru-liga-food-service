@@ -9,13 +9,16 @@ import ru.liga.commons.exception.ResourceNotFoundException;
 import ru.liga.commons.mapper.CourierListMapper;
 import ru.liga.commons.mapper.CourierMapper;
 import ru.liga.commons.model.Courier;
+import ru.liga.commons.model.Order;
 import ru.liga.commons.repositories.CourierRepository;
+import ru.liga.commons.repositories.OrderRepository;
 import ru.liga.commons.status.StatusCourier;
 import ru.liga.commons.util.DistanceCalculator;
 import ru.liga.delivery_service.service.CourierService;
 import ru.liga.commons.util.LocalityDeterminant;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -23,39 +26,26 @@ import java.util.List;
 public class CourierServiceImpl implements CourierService {
 
     private final CourierRepository courierRepository;
+    private final OrderRepository orderRepository;
     private final CourierMapper mapper;
     private final CourierListMapper listMapper;
     private final DistanceCalculator distanceCalculator;
     private final LocalityDeterminant localityDeterminant;
 
-    public CourierDto getCourierById(Long id) {
+    @Override
+    public CourierDto getCourierById(UUID id) {
         return mapper.toDTO(courierRepository
                 .findById(id)
                 .orElseThrow(ResourceNotFoundException::new));
     }
 
+    @Override
     public List<CourierDto> getCourierByStatusActive() {
         return listMapper.toDTOList(courierRepository
                 .findAllByStatus(StatusCourier.COURIER_ACTIVE));
     }
 
-    public CourierDto createCourier(CourierDto courierRequest) {
-        if (courierRequest.getCoordinates() == null
-                || courierRequest.getPhone() == null) {
-            throw new CreationException("Bad request");
-        }
-
-        Courier courier = Courier
-                .builder()
-                .coordinates(courierRequest.getCoordinates())
-                .phone(courierRequest.getPhone())
-                .status(StatusCourier.COURIER_NOT_ACTIVE)
-                .build();
-
-        return mapper.toDTO(courierRepository
-                .save(courier));
-    }
-
+    @Override
     public CourierDto getClosestCourier(String restaurantAddress, String district) {
         List<CourierDto> couriers = getCourierByStatusActive();
         log.info("CourierService: getCourierByStatusActive = " + couriers);
@@ -78,19 +68,14 @@ public class CourierServiceImpl implements CourierService {
         return closestCourier;
     }
 
-    public CourierDto updateCourierById(Long id, CourierDto courierRequest) {
-        Courier courierResponse = mapper.toModel(getCourierById(id));
-        mapper.updateCourierFromDto(courierRequest, courierResponse);
-        courierResponse.setId(id);
-        return mapper.toDTO(courierRepository
-                .save(courierResponse));
-    }
-
-    public void updateCourierStatusById(Long id, StatusCourier statusCourier) {
+    @Override
+    public void updateCourierStatusById(UUID id, StatusCourier statusCourier) {
         Courier courierResponse = mapper.toModel(getCourierById(id));
         courierResponse.setStatus(statusCourier);
         mapper.toDTO(courierRepository
                 .save(courierResponse));
     }
+
+
 
 }

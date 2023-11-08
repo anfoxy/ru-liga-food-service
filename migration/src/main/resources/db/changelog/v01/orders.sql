@@ -1,5 +1,3 @@
-create sequence if not exists order_seq;
-
 create type orders_status AS ENUM
     (
     'CUSTOMER_CREATED',
@@ -19,11 +17,11 @@ create type orders_status AS ENUM
 
 create table if not exists orders
 (
-    order_id bigint not null default nextval ('order_seq'),
-    customer_id bigint not null,
-    restaurant_id bigint not null,
+    order_id uuid not null default gen_random_uuid(),
+    customer_id uuid not null,
+    restaurant_id uuid not null,
     status orders_status not null,
-    courier_id bigint,
+    courier_id uuid,
     timestamp timestamptz not null default now(),
     create_dttm timestamptz not null default now(),
     modify_dttm timestamptz not null default now(),

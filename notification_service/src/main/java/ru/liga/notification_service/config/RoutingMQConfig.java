@@ -12,18 +12,10 @@ public class RoutingMQConfig {
 
     @Bean
     public Declarables myQueue() {
-        Queue restaurantQueue = new Queue("restaurantQueue", false);
-        Queue customerQueue = new Queue("customerQueue", false);
-        Queue courierQueue = new Queue("courierQueue", false);
-        Queue restaurantMessageQueue = new Queue("restaurantMessageQueue", false);
-
+        Queue notification = new Queue("notification", false);
         DirectExchange directExchange = new DirectExchange("directExchange");
-
-        return new Declarables(restaurantQueue, customerQueue, courierQueue, restaurantMessageQueue, directExchange,
-                BindingBuilder.bind(restaurantQueue).to(directExchange).with("restaurant.order"),
-                BindingBuilder.bind(customerQueue).to(directExchange).with("customer.order"),
-                BindingBuilder.bind(restaurantMessageQueue).to(directExchange).with("restaurant.message"),
-                BindingBuilder.bind(courierQueue).to(directExchange).with("courier.order"));
+        return new Declarables(notification, directExchange,
+                BindingBuilder.bind(notification).to(directExchange).with("notification.message"));
     }
 
 }

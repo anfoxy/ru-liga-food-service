@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.UUID;
+
 @Schema(description = "Курьер")
 @Data
 @Setter
@@ -20,7 +22,7 @@ import lombok.experimental.Accessors;
 public class CustomerDto {
 
     @Schema(description = "ID курьера")
-    private Long id;
+    private UUID id;
 
     @Schema(description = "телефон")
     private String phone;

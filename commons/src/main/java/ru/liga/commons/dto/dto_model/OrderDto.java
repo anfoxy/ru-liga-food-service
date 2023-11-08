@@ -13,6 +13,7 @@ import ru.liga.commons.status.StatusOrders;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Schema(description = "Заказ")
 @Data
@@ -26,7 +27,7 @@ import java.util.List;
 public class OrderDto {
 
     @Schema(description = "ID заказа")
-    private Long id;
+    private UUID id;
 
     @Schema(description = "Клиент")
     private CustomerDto customer;

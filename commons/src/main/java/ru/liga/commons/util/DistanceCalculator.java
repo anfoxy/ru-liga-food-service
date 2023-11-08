@@ -43,7 +43,7 @@ public class DistanceCalculator {
 
         double haversinusFormula = 2 * Math.atan2(Math.sqrt(formula), Math.sqrt(1 - formula));
         double distance = earthRadius * haversinusFormula;
-        return distance;
+        return Math.round(distance * 100) / 100.0;
     }
 
 }

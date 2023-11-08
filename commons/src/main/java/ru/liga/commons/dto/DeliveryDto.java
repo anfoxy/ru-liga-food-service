@@ -11,6 +11,8 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import ru.liga.commons.status.StatusOrders;
 
+import java.util.UUID;
+
 @Schema(description = "Доставка")
 @Data
 @Builder
@@ -23,10 +25,10 @@ import ru.liga.commons.status.StatusOrders;
 public class DeliveryDto {
 
     @Schema(description = "ID заказа")
-    private Long orderId;
+    private UUID orderId;
 
     @Schema(description = "ID курьера")
-    private Long courierId;
+    private UUID courierId;
 
     @Schema(description = "Ресторан")
     private RestaurantForDeliveryDto restaurant;

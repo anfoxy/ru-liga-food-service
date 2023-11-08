@@ -1,8 +1,6 @@
-create sequence if not exists customer_seq;
-
 create table if not exists customer
 (
-    customer_id bigint not null default nextval ('customer_seq'),
+    customer_id uuid not null default gen_random_uuid(),
     phone varchar(11) not null,
     email varchar(255) not null,
     address varchar(255) not null,

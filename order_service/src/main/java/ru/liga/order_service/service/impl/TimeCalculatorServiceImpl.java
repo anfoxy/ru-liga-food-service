@@ -22,7 +22,7 @@ public class TimeCalculatorServiceImpl implements TimeCalculatorService {
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
         Duration duration = Duration.ofMinutes(order.getOrderItems().size() * 20L);
         zonedDateTime = zonedDateTime.plus(duration);
-
+        log.info("Estimated delivery time = " + zonedDateTime.toString() +" by order: " + order);
         return zonedDateTime;
     }
 

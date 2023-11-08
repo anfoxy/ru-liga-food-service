@@ -6,21 +6,20 @@ import ru.liga.order_service.dto.OrderCreateResponseDto;
 import ru.liga.commons.status.StatusOrders;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface OrderService {
 
-    OrderDto getOrderById(Long id);
+    OrderDto getOrderById(UUID id);
 
-    List<OrderDto> getAllOrderByStatus(StatusOrders status);
 
-    List<OrderDto> getAllOrderByCustomerID(Long customerId);
+    List<OrderDto> getAllOrderByCustomerID(UUID customerId);
 
-    List<OrderDto> getOrderByRestaurantID(Long restaurant_id);
 
     OrderCreateResponseDto orderCreate(OrderCreateRequestDto orderDto);
 
-    OrderDto orderUpdate(Long id, OrderDto orderRequest);
+    OrderDto orderUpdateCourierAndStatus(UUID id, OrderDto orderRequest);
 
-    OrderDto updateOrderStatusById(Long id, StatusOrders status);
+    OrderDto updateOrderStatusById(UUID id, StatusOrders status);
 
 }
